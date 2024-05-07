@@ -8,13 +8,13 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from norm_model_predict_age_from_cortthick import norm_model_predict_age_from_cortthick
-from apply_normative_model_time2 import apply_normative_model_time2
+from apply_normative_model_predict_age_from_cortthick import apply_normative_model_predict_age_from_cortthick
 from plot_z_scores import plot_and_compute_zcores_by_gender
 
 
 orig_struct_var = 'cortthick'
-show_plots = 1  #set to 1 to show training and test data ymvs yhat and spline fit plots.
-show_nsubject_plots = 1 #set to 1 to plot number of subjects used in analysis, for each age and gender
+show_plots = 0  #set to 1 to show training and test data ymvs yhat and spline fit plots.
+show_nsubject_plots = 0 #set to 1 to plot number of subjects used in analysis, for each age and gender
 spline_order = 1 # order of spline to use for model
 spline_knots = 2 # number of knots in spline to use in model
 
@@ -28,11 +28,11 @@ Z_time1 = {}
 Z_time2 = {}
 
 for gender in ['male', 'female']:
-    norm_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, show_nsubject_plots, spline_order, spline_knots,
-                               orig_data_dir, working_dir)
+    norm_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, show_nsubject_plots, spline_order,
+                                          spline_knots, orig_data_dir, working_dir)
 
-    apply_normative_model_time2(gender, orig_struct_var, show_plots, show_nsubject_plots, spline_order, spline_knots,
-                                orig_data_dir, working_dir)
+    apply_normative_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, show_nsubject_plots,
+                                                     spline_order, spline_knots, orig_data_dir, working_dir)
 
 Z_time2_male  = pd.read_csv('{}/predict_files/{}/Z_scores_by_region_postcovid_testset_Final.txt'
                             .format(working_dir, 'cortthick_male'))

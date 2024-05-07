@@ -178,8 +178,8 @@ def read_ct_from_file(wdir,gender):  #note this didn't have  gender before? Chec
         # Read all lines from the file
         lines = file.readlines()
     # Extract the values from the lines
-    cortthickmin = lines[0].strip()
-    cortthickmax = lines[1].strip()
+    cortthickmin = float(lines[0].strip())
+    cortthickmax = float(lines[1].strip())
     return cortthickmin, cortthickmax
 
 def write_list_to_file(mylist, filepath):
@@ -214,61 +214,6 @@ def plot_brain_age_gap_by_gender(brain_age_gap_df, model_type, include_gender):
     plt.ylabel('Number of subjects')
     plt.show(block=False)
 
-def plotactual_age_vs_predicted_age(X_test_v2, y_test_v2, y_test_pred_v2, datatypestr, model_type, include_gender):
-    if datatypestr == 'train':
-        covid_str = 'pre-covid'
-    elif datatypestr == 'test':
-        covid_str = 'post-covid'
-    plt.figure()
-    ax=plt.axes()
-    if include_gender ==0:
-        sc = ax.scatter(y_test_v2, y_test_pred_v2)
-    elif include_gender ==1:
-        gen = X_test_v2['sex']
-        cmap_custom = ListedColormap(['blue', 'orange'])
-        sc = ax.scatter(y_test_v2, y_test_pred_v2, c=gen, cmap=cmap_custom)
-        handles, labels = sc.legend_elements()
-        labels=['male', 'female']
-        ax.legend(handles, labels)
-    ax.plot([y_test_v2.min(), y_test_v2.max()], [y_test_v2.min(), y_test_v2.max()], color='red')  # plots line y = x
-    ax.set_xlabel('actual age (days)')
-    ax.set_ylabel('predicted age (days)')
-    ax.set_title(f'{model_type} predicted vs actual age for {covid_str} lockdown data')
-    plt.show(block=False)
 
-def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path_female, dummy_cov_file_path_male):
-    # create dummy data to find equation for linear regression fit between age and structvar
-    dummy_predictors_f = pd.read_csv(dummy_cov_file_path_female, delim_whitespace=True, header=None)
-    dummy_predictors_m = pd.read_csv(dummy_cov_file_path_male, delim_whitespace=True, header=None)
-    dummy_ages_f = dummy_predictors_f.iloc[:, 0]
-    dummy_ages_m = dummy_predictors_m.iloc[:, 0]
 
-    # calculate predicted values for dummy covariates for male and female
-    output_f = predict(dummy_cov_file_path_female, respfile=None, alg='blr', model_path=model_dir)
-    output_m = predict(dummy_cov_file_path_male, respfile=None, alg='blr', model_path=model_dir)
-
-    yhat_predict_dummy_f = output_f[0]
-    yhat_predict_dummy_m = output_m[0]
-
-    # remove last element of age and output arrays
-    last_index = len(yhat_predict_dummy_f) - 1
-    yhat_predict_dummy_f = np.delete(yhat_predict_dummy_f, -1)
-    yhat_predict_dummy_m = np.delete(yhat_predict_dummy_m, -1)
-    dummy_ages_f = np.delete(dummy_ages_f.to_numpy(), -1)
-    dummy_ages_m = np.delete(dummy_ages_m.to_numpy(), -1)
-
-    # find slope and intercept of lines
-    slope_f, intercept_f, rvalue_f, pvalue_f, std_error_f = stats.linregress(dummy_ages_f, yhat_predict_dummy_f)
-    slope_m, intercept_m, rvalue_m, pvalue_m, std_error_m = stats.linregress(dummy_ages_m, yhat_predict_dummy_m)
-
-    # #plot dummy data with fit
-    # plt.figure()
-    # plt.plot(dummy_ages_f, yhat_predict_dummy_f, 'og', markersize=3, markerfacecolor='None')
-    # plt.plot(dummy_ages_m, yhat_predict_dummy_m, 'ob', markersize=3, markerfacecolor='None')
-    # plt.plot(dummy_ages_f, slope_f*dummy_ages_f+intercept_f, '-k', linewidth=1)
-    # plt.plot(dummy_ages_m, slope_m*dummy_ages_f+intercept_m, '-k', linewidth=1)
-    # # plt.title(roi)
-    # plt.show(block=False)
-
-    return slope_f, intercept_f, slope_m, intercept_m
 

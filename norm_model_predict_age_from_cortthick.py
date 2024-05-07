@@ -162,8 +162,6 @@ def norm_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, s
     # ●saveoutput=False: return the outputs directly rather than writing them to disk
     # ●standardize=False: do not standardize the covariates or response variable
 
-    # Loop through ROIs
-
     for a in ['agedays']:
         age_dir = os.path.join(data_dir, a)
         model_dir = os.path.join(data_dir, a, 'Models')
