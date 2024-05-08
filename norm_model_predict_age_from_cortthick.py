@@ -162,44 +162,42 @@ def norm_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, s
     # ●saveoutput=False: return the outputs directly rather than writing them to disk
     # ●standardize=False: do not standardize the covariates or response variable
 
-    for a in ['agedays']:
-        age_dir = os.path.join(data_dir, a)
-        model_dir = os.path.join(data_dir, a, 'Models')
-        os.chdir(age_dir)
+    age_dir = os.path.join(data_dir, 'agedays')
+    model_dir = os.path.join(data_dir, 'agedays', 'Models')
+    os.chdir(age_dir)
 
-        # configure the covariates to use. Change *_bspline_* to *_int_*
-        cov_file_tr = os.path.join(age_dir, 'cov_bspline_tr.txt')
-        cov_file_te = os.path.join(age_dir, 'cov_bspline_te.txt')
+    # configure the covariates to use. Change *_bspline_* to *_int_*
+    cov_file_tr = os.path.join(age_dir, 'cov_bspline_tr.txt')
+    cov_file_te = os.path.join(age_dir, 'cov_bspline_te.txt')
 
-        # load train & test response files
-        resp_file_tr = os.path.join(age_dir, 'resp_tr.txt')
-        resp_file_te = os.path.join(age_dir, 'resp_te.txt')
+    # load train & test response files
+    resp_file_tr = os.path.join(age_dir, 'resp_tr.txt')
+    resp_file_te = os.path.join(age_dir, 'resp_te.txt')
 
-        # calculate a model based on the training data and apply to the validation dataset. If the model is being created
-        # from the entire training set, the validation set is simply a copy of the full training set and the purpose of
-        # running this function is to creat and save the model, not to evaluate performance. The following are calcualted:
-        # the predicted validation set response (yhat_te), the variance of the predicted response (s2_te), the model
-        # parameters (nm),the Zscores for the validation data, and other various metrics (metrics_te)
-        yhat_te, s2_te, nm, Z_te, metrics_te = estimate(cov_file_tr, resp_file_tr, testresp=resp_file_te,
-                                                        testcov=cov_file_te, alg='blr', optimizer='powell',
-                                                        savemodel=True, saveoutput=False, standardize=False)
+    # calculate a model based on the training data and apply to the validation dataset. If the model is being created
+    # from the entire training set, the validation set is simply a copy of the full training set and the purpose of
+    # running this function is to creat and save the model, not to evaluate performance. The following are calcualted:
+    # the predicted validation set response (yhat_te), the variance of the predicted response (s2_te), the model
+    # parameters (nm),the Zscores for the validation data, and other various metrics (metrics_te)
+    yhat_te, s2_te, nm, Z_te, metrics_te = estimate(cov_file_tr, resp_file_tr, testresp=resp_file_te,
+                                                    testcov=cov_file_te, alg='blr', optimizer='powell',
+                                                    savemodel=True, saveoutput=False, standardize=False)
 
-        # create dummy design matrices for visualizing model
-        dummy_cov_file_path = \
-            (create_dummy_design_matrix_one_gender_predict_age(struct_var, cortthick_min, cortthick_max, cov_file_tr, spline_order, spline_knots,
-                                                   working_dir))
+    # create dummy design matrices for visualizing model
+    dummy_cov_file_path = \
+        (create_dummy_design_matrix_one_gender_predict_age(struct_var, cortthick_min, cortthick_max, cov_file_tr, spline_order, spline_knots,
+                                               working_dir))
 
-        # compute splines and superimpose on data. Show on screen or save to file depending on show_plots value.
-        plot_data_with_spline_one_gender_predict_age(gender, 'Training Data', struct_var, cov_file_tr, resp_file_tr, dummy_cov_file_path,
-                              model_dir, a, show_plots, working_dir)
+    # compute splines and superimpose on data. Show on screen or save to file depending on show_plots value.
+    plot_data_with_spline_one_gender_predict_age(gender, 'Training Data', struct_var, cov_file_tr, resp_file_tr, dummy_cov_file_path,
+                          model_dir, 'agedays', show_plots, working_dir)
 
 
-        # store z score for ROI validation set
-        Z_score_test_matrix[a] = Z_te
+    # store z score for ROI validation set
+    Z_score_test_matrix['agedays'] = Z_te
 
       # savez scores to file
     Z_score_test_matrix.to_csv('{}/data/{}/Z_scores_validation_set_{}.txt'.format(working_dir, struct_var,
                                             gender), index=False)
-
 
     return Z_score_train_matrix

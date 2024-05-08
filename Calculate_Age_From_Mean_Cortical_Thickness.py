@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from norm_model_predict_age_from_cortthick import norm_model_predict_age_from_cortthick
 from apply_normative_model_predict_age_from_cortthick import apply_normative_model_predict_age_from_cortthick
+from Utility_Functions_Predict_Age import calculate_age_acceleration
 from plot_z_scores import plot_and_compute_zcores_by_gender
 
 
@@ -34,17 +35,6 @@ for gender in ['male', 'female']:
     apply_normative_model_predict_age_from_cortthick(gender, orig_struct_var, show_plots, show_nsubject_plots,
                                                      spline_order, spline_knots, orig_data_dir, working_dir)
 
-Z_time2_male  = pd.read_csv('{}/predict_files/{}/Z_scores_by_region_postcovid_testset_Final.txt'
-                            .format(working_dir, 'cortthick_male'))
-Z_time2_female  = pd.read_csv('{}/predict_files/{}/Z_scores_by_region_postcovid_testset_Final.txt'
-                            .format(working_dir, 'cortthick_female'))
-
-Z_time2_male.to_csv(f'{working_dir}/predict_files/Z_time2_male.csv', index=False)
-Z_time2_female.to_csv(f'{working_dir}/predict_files/Z_time2_female.csv', index=False)
-
-Z_time2['male'] = Z_time2_male
-Z_time2['female'] = Z_time2_female
-
-plot_and_compute_zcores_by_gender(orig_struct_var, Z_time2)
+    calculate_age_acceleration(gender, working_dir)
 
 mystop=1

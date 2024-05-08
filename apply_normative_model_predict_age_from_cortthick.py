@@ -136,34 +136,39 @@ def apply_normative_model_predict_age_from_cortthick(gender, orig_struct_var, sh
     #create design matrices for all regions and save files in respective directories
     create_design_matrix_one_gender_predict_age('test', cortthickmin, cortthickmax, spline_order, spline_knots, ['agedays'], data_dir)
 
-    for a in ['agedays']:
-        print('Running ROI:', a)
-        roi_dir = os.path.join(predict_files_dir, a)
-        model_dir = os.path.join(training_dir, a, 'Models')
-        # os.chdir(roi_dir)
 
-        # configure the covariates to use.
-        cov_file_te = os.path.join(roi_dir, 'cov_bspline_te.txt')
+    roi_dir = os.path.join(predict_files_dir, 'agedays')
+    model_dir = os.path.join(training_dir, 'agedays', 'Models')
+    # os.chdir(roi_dir)
 
-        # load test response files
-        resp_file_te = os.path.join(roi_dir, 'resp_te.txt')
+    # configure the covariates to use.
+    cov_file_te = os.path.join(roi_dir, 'cov_bspline_te.txt')
 
-        # make predictions
-        yhat_te, s2_te, Z = predict(cov_file_te, respfile=resp_file_te, alg='blr', model_path=model_dir)
+    # load test response files
+    resp_file_te = os.path.join(roi_dir, 'resp_te.txt')
 
-        Z_time2[a] = Z
+    # make predictions
+    yhat_te, s2_te, Z = predict(cov_file_te, respfile=resp_file_te, alg='blr', model_path=model_dir)
 
-        #create dummy design matrices
-        dummy_cov_file_path= \
-            create_dummy_design_matrix_one_gender_predict_age(struct_var, cortthickmin,cortthickmax, cov_file_te, spline_order, spline_knots,
-                                                  working_dir)
+    Z_time2['agedays'] = Z
 
-        plot_data_with_spline_one_gender_predict_age(gender, 'Postcovid (Test) Data ', struct_var, cov_file_te, resp_file_te,
-                                         dummy_cov_file_path, model_dir, a, show_plots, working_dir)
+    #create dummy design matrices
+    dummy_cov_file_path= \
+        create_dummy_design_matrix_one_gender_predict_age(struct_var, cortthickmin,cortthickmax, cov_file_te,
+                                                          spline_order, spline_knots, working_dir)
 
-        mystop=1
+    plot_data_with_spline_one_gender_predict_age(gender, 'Postcovid (Test) Data ', struct_var, cov_file_te, resp_file_te,
+                                     dummy_cov_file_path, model_dir, 'agedays', show_plots, working_dir)
+
+    mystop=1
 
     Z_time2.to_csv('{}/predict_files/{}/Z_scores_postcovid_testset_{}.txt'
+                                .format(working_dir, struct_var, gender), index=False)
+
+    yhat_te_df = pd.DataFrame(yhat_te, columns=['predicted_agedays'])
+    yhat_te_df['agedays'] = all_data['agedays']
+    yhat_te_df['avgcortthick'] = all_data['avgcortthick']
+    yhat_te_df.to_csv('/{}/predict_files/{}/age and predicted age postcovid_test_data_{}.csv'
                                 .format(working_dir, struct_var, gender), index=False)
 
     plt.show()

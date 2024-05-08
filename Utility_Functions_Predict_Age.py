@@ -214,6 +214,52 @@ def plot_brain_age_gap_by_gender(brain_age_gap_df, model_type, include_gender):
     plt.ylabel('Number of subjects')
     plt.show(block=False)
 
+def calculate_age_acceleration(gender, working_dir):
+    # Load file with age and predicted age
+    y_yhat_df = pd.read_csv(f'{working_dir}/predict_files/age_{gender}/age and predicted age postcovid_test_data_{gender}.csv')
+    plt.scatter(y_yhat_df['agedays'], y_yhat_df['predicted_agedays'])
+    plt.plot([min(y_yhat_df['agedays']), max(y_yhat_df['agedays'])], [min(y_yhat_df['agedays']), max(y_yhat_df['agedays'])], color='red')
+    plt.title(f'yhat vs y (agedays) {gender} post-covid')
+    plt.xlabel('agedays')
+    plt.ylabel('predicted agedays')
+    plt.show()
+
+    yminusyhat = y_yhat_df['agedays'] - y_yhat_df['predicted_agedays']
+    yminusyhat_mean = yminusyhat.mean()
+    yminusyhat_years = yminusyhat_mean/365.25
+
+    # Load model mapping between cortical thickness and age
+    model_mapping = pd.read_csv(f'{working_dir}/data/age_{gender}/plots/spline_model_Training Data_agedays_{gender}.csv')
+    model_mapping.drop(columns=['Unnamed: 0'], inplace=True)
+
+    # For every post-covid subjects, calculate what predicted age would be based on actual cortical thickness for that subject
+    age_acceleration = []
+    plot_df = pd.DataFrame()
+    for val in range(y_yhat_df.shape[0]):
+        index_match = model_mapping['avgcortthick'].sub(y_yhat_df.loc[val, 'avgcortthick']).abs().idxmin()
+        predicted_age = model_mapping.loc[index_match, f'age_{gender}']
+        actual_age = y_yhat_df.loc[val, 'agedays']/365.25
+        age_acceleration.append(actual_age - predicted_age)
+        plot_df.loc[val, 'actual_age'] = actual_age
+        plot_df.loc[val, 'predicted_age'] = predicted_age
+        plot_df.loc[val, 'index'] = val
+    avg_age_acceleration = sum(age_acceleration) / len(age_acceleration)
+    fig, axs = plt.subplots(2, figsize=(10, 8))
+    axs[0].scatter(plot_df['index'], plot_df['actual_age'], color='red')
+    axs[0].scatter(plot_df['index'], plot_df['predicted_age'], color='purple')
+    axs[0].legend(['actual age', 'predicted age'], loc='upper left')
+    axs[0].set_title(f'Actual Age and Predicted Age for all Post Covid Subjects {gender}')
+    axs[0].set_xlabel('Subject Number')
+    axs[0].set_ylabel('Age (years)')
+    axs[1].scatter(plot_df['index'], plot_df['predicted_age'] - plot_df['actual_age'], color = 'gray')
+    axs[1].set_title(f'Predicted minus Actual Age for all Post Covid Subjects {gender}  Average = {avg_age_acceleration:.1f}')
+    axs[1].set_xlabel('Subject Number')
+    axs[1].set_ylabel('Predicted minus Actual Age (years)')
+    plt.show()
+    mystop=1
+
+
+
 
 
 
