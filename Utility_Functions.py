@@ -244,39 +244,29 @@ def plotactual_age_vs_predicted_age(X_test_v2, y_test_v2, y_test_pred_v2, dataty
     ax.set_title(f'{model_type} predicted vs actual age for {covid_str} lockdown data')
     plt.show(block=False)
 
-def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path_female, dummy_cov_file_path_male):
+def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path):
     # create dummy data to find equation for linear regression fit between age and structvar
-    dummy_predictors_f = pd.read_csv(dummy_cov_file_path_female, delim_whitespace=True, header=None)
-    dummy_predictors_m = pd.read_csv(dummy_cov_file_path_male, delim_whitespace=True, header=None)
-    dummy_ages_f = dummy_predictors_f.iloc[:, 0]
-    dummy_ages_m = dummy_predictors_m.iloc[:, 0]
+    dummy_predictors = pd.read_csv(dummy_cov_file_path, delim_whitespace=True, header=None)
+    dummy_ages = dummy_predictors.iloc[:, 0]
 
     # calculate predicted values for dummy covariates for male and female
-    output_f = predict(dummy_cov_file_path_female, respfile=None, alg='blr', model_path=model_dir)
-    output_m = predict(dummy_cov_file_path_male, respfile=None, alg='blr', model_path=model_dir)
+    output = predict(dummy_cov_file_path, respfile=None, alg='blr', model_path=model_dir)
 
-    yhat_predict_dummy_f = output_f[0]
-    yhat_predict_dummy_m = output_m[0]
+    yhat_predict_dummy = output[0]
 
     # remove last element of age and output arrays
-    last_index = len(yhat_predict_dummy_f) - 1
-    yhat_predict_dummy_f = np.delete(yhat_predict_dummy_f, -1)
-    yhat_predict_dummy_m = np.delete(yhat_predict_dummy_m, -1)
-    dummy_ages_f = np.delete(dummy_ages_f.to_numpy(), -1)
-    dummy_ages_m = np.delete(dummy_ages_m.to_numpy(), -1)
+    last_index = len(yhat_predict_dummy) - 1
+    yhat_predict_dummy = np.delete(yhat_predict_dummy, -1)
+    dummy_ages = np.delete(dummy_ages.to_numpy(), -1)
 
     # find slope and intercept of lines
-    slope_f, intercept_f, rvalue_f, pvalue_f, std_error_f = stats.linregress(dummy_ages_f, yhat_predict_dummy_f)
-    slope_m, intercept_m, rvalue_m, pvalue_m, std_error_m = stats.linregress(dummy_ages_m, yhat_predict_dummy_m)
+    slope, intercept, rvalue, pvalue, std_error = stats.linregress(dummy_ages, yhat_predict_dummy)
 
-    # #plot dummy data with fit
-    # plt.figure()
-    # plt.plot(dummy_ages_f, yhat_predict_dummy_f, 'og', markersize=3, markerfacecolor='None')
-    # plt.plot(dummy_ages_m, yhat_predict_dummy_m, 'ob', markersize=3, markerfacecolor='None')
-    # plt.plot(dummy_ages_f, slope_f*dummy_ages_f+intercept_f, '-k', linewidth=1)
-    # plt.plot(dummy_ages_m, slope_m*dummy_ages_f+intercept_m, '-k', linewidth=1)
-    # # plt.title(roi)
-    # plt.show(block=False)
+    #plot dummy data with fit
+    plt.figure()
+    plt.plot(dummy_ages, yhat_predict_dummy, 'og', markersize=3, markerfacecolor='None')
+    plt.plot(dummy_ages, slope*dummy_ages+intercept, '-k', linewidth=1)
+    plt.show()
 
-    return slope_f, intercept_f, slope_m, intercept_m
+    return slope, intercept
 
