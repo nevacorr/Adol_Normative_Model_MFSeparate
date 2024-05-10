@@ -31,7 +31,7 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
     for roi in roi_ids:
         print('Creating basis expansion for ROI:', roi)
         roi_dir = os.path.join(data_dir, roi)
-        # os.chdir(roi_dir)
+        os.chdir(roi_dir)
         # create output dir
         os.makedirs(os.path.join(roi_dir, 'blr'), exist_ok=True)
 
@@ -39,6 +39,9 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
         if datatype == 'train':
             X = np.loadtxt(os.path.join(roi_dir, 'cov_tr.txt'))
         elif datatype == 'test':
+            f=os.listdir(roi_dir)
+            p = os.path.join(roi_dir, 'cov_te.txt')
+            tmp=np.loadtxt(p)
             X = np.loadtxt(os.path.join(roi_dir, 'cov_te.txt'))
 
         # add intercept column
@@ -262,11 +265,11 @@ def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path):
     # find slope and intercept of lines
     slope, intercept, rvalue, pvalue, std_error = stats.linregress(dummy_ages, yhat_predict_dummy)
 
-    #plot dummy data with fit
-    plt.figure()
-    plt.plot(dummy_ages, yhat_predict_dummy, 'og', markersize=3, markerfacecolor='None')
-    plt.plot(dummy_ages, slope*dummy_ages+intercept, '-k', linewidth=1)
-    plt.show()
+    # #plot dummy data with fit
+    # plt.figure()
+    # plt.plot(dummy_ages, yhat_predict_dummy, 'og', markersize=3, markerfacecolor='None')
+    # plt.plot(dummy_ages, slope*dummy_ages+intercept, '-k', linewidth=1)
+    # plt.show()
 
     return slope, intercept
 
