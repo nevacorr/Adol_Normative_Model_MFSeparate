@@ -12,18 +12,19 @@ def save_csvdata_to_dictdf(fileprefix, data_dir):
     data_dict={}
     for sex in ['male', 'female']:
         # Create list of all filenames with cortical thickness data for each region and gender
-        spline_model_files = glob.glob(f'{data_dir}/cortthick_{sex}/plots/{fileprefix}*.csv')
+        dstr = f'{data_dir}/cortthick_{sex}/plots/{fileprefix}*.csv'
+        data_files = glob.glob(dstr)
         # Create dictionary of dataframes
         data_dict[sex] = pd.DataFrame()
         # Read the data in and save to a dictionary
-        for i, file in enumerate(spline_model_files):
-            spline_model = pd.read_csv(file, index_col=0)
+        for i, file in enumerate(data_files):
+            data = pd.read_csv(file, index_col=0)
             if i==0:
-               data_dict[sex]['Age in Days'] = spline_model['Age in Days']
+               data_dict[sex]['Age in Days'] = data['Age in Days']
             # Get region names
             region_name = file.split('cortthick-')[1]
             region_name = region_name.split(f'_{sex}.csv')[0]
-            data_dict[sex][region_name] = spline_model[f'cortthick_{sex}']
+            data_dict[sex][region_name] = data[f'cortthick_{sex}']
     return data_dict
 
 
@@ -51,28 +52,36 @@ def calc_interaction(datapoints_all, regions):
 
     return interaction_pvals_df, corrected_int_pvals_df
 
-def plot_data(regions, spline_models_all, datapoints_all, interaction_pvals_df, corrected_int_pvals_df, data_dir, show_plots):
+def plot_data(regions, spline_models_all, datapoints_all, interaction_pvals_df, corrected_int_pvals_df, data_dir, show_plots, datastr):
     # Plot age vs cortthick for each gender for each region, both datapoints and blr model
     for reg in regions:
         fig = plt.figure()
-        colors = {0: 'blue', 1: 'green'}
+        colors = {0: 'green', 1: 'blue'}
         sns.lineplot(data=spline_models_all, x='Age_in_Days', y=reg, hue='gender', palette=colors, legend=False)
         sns.scatterplot(data=datapoints_all, x='Age_in_Days', y=reg, hue='gender', palette=colors)
         plt.legend(title='')
         ax = plt.gca()
         fig.subplots_adjust(right=0.82)
         handles, labels = ax.get_legend_handles_labels()
-        label = ['male', 'female']
+        label = ['female', 'male']
         ax.legend(handles, label, loc='upper left', bbox_to_anchor=(1, 1))
-        plt.title(
-            f'Training Data cortthick vs. Age {reg}\n gender interaction uncorrp = '
-            f'{interaction_pvals_df.loc[reg, 0]:.2f} corrp = {corrected_int_pvals_df.loc[reg, 0]:.2f}')
+        if datastr =='train':
+            plt.title(
+                f'Training Data cortthick vs. Age {reg}\n gender interaction uncorrp = '
+                f'{interaction_pvals_df.loc[reg, 0]:.2f} corrp = {corrected_int_pvals_df.loc[reg, 0]:.2f}')
+        else:
+            plt.title(
+                f'Postcovid (test) Data cortthick vs. Age {reg}')
         plt.xlabel('Age')
-        plt.ylabel('Training Data cortthick')
+        plt.ylabel('Cortthick')
         if show_plots:
             plt.show(block=False)
         # Save plots to file
-        plt.savefig('{}/cortthick_vs_age_withsplinefit_{}_{}_{}'
+        if datastr == 'train':
+            plt.savefig('{}/cortthick_vs_age_withsplinefit_{}_{}_{}'
                         .format(data_dir, 'cortthick', reg, 'Training Data'))
+        else:
+            plt.savefig('{}/cortthick_vs_age_withsplinefit_{}_{}_{}'
+                        .format(data_dir, 'cortthick', reg, 'PostCovid (Test) Data'))
         if show_plots == 0:
             plt.close(fig)

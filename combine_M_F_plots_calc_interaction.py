@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from helper_functions_mfinteraction import save_csvdata_to_dictdf, calc_interaction, plot_data
 
-# Read in data files and save to data as dataframe variables
-data_dir = '/home/toddr/neva/PycharmProjects/Adol_COVID_cortthick_CentileBrain/data'
+# Read in training data files and save to data as dataframe variables
+data_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate/data'
 spline_model_data = save_csvdata_to_dictdf('spline_model', data_dir)
 datapoints_data = save_csvdata_to_dictdf('datapoints', data_dir)
 
@@ -45,9 +45,27 @@ interaction_pvals_df, corrected_int_pvals_df = calc_interaction(datapoints_all, 
 sig_interaction_uncorr_pvals = interaction_pvals_df.loc[interaction_pvals_df[0]<0.050]
 sig_interaction_corr_pvals = corrected_int_pvals_df.loc[corrected_int_pvals_df[0]<0.050]
 
-# Save plots to file and display plots if desired
-show_plots=1
-plot_data(regions, spline_models_all, datapoints_all, interaction_pvals_df, corrected_int_pvals_df, data_dir, show_plots)
+# Save time 1 plots to file and display plots if desired
+show_plots=0
+plot_data(regions, spline_models_all, datapoints_all, interaction_pvals_df, corrected_int_pvals_df, data_dir, show_plots, 'train')
+plt.show()
 
+# Make plots of post-covid data for both genders with models superimposed
+# Read in postcovid data files and save to data as dataframe variables
+predict_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate/predict_files'
+time2_datapoints_data = save_csvdata_to_dictdf('datapoints', predict_dir)
+# Save male and female data to separate dataframes
+time2_datapoints_female = time2_datapoints_data['female']
+time2_datapoints_male = time2_datapoints_data['male']
+# Add gender column to dataframe
+time2_datapoints_female['gender'] = 0
+time2_datapoints_male['gender'] = 1
+# Combine male and female data into one dataframe
+time2_datapoints_all = pd.concat([time2_datapoints_female, time2_datapoints_male], axis=0)
+time2_datapoints_all.rename(columns={'Age in Days': 'Age_in_Days'}, inplace=True)
+time2_datapoints_all.columns = time2_datapoints_all.columns.str.replace('-', '_')
+# Save time 2 plots to file and display plots if desired
+show_plots=0
+plot_data(regions, spline_models_all, time2_datapoints_all, [], [], predict_dir, show_plots, 'test')
 plt.show()
 mystop=1

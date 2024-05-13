@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b613695e-70e4-4fb5-a8c4-693b8f47189c" name="Changes" comment="Perform age acceleration calculation wit bootstrap">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Adol_Norm_Model_MFSeparate.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Calculate_Effect_SIze_and_CI_using_Zscore.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Load_Genz_Data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/load_raw_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/normative_edited.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plot_num_subjs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plot_z_scores.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calculate_Age_From_Mean_Cortical_Thickness.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NormativeModel_Create_and_Apply_Genz_M_F_Separate.py" beforeDir="false" afterPath="$PROJECT_DIR$/NormativeModel_Create_and_Apply_Genz_M_F_Separate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility_Functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility_Functions_Predict_Age.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply_normative_model_predict_age_from_cortthick.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calculate_avg_brain_age_acceleration_bootstrap.py" beforeDir="false" afterPath="$PROJECT_DIR$/calculate_avg_brain_age_acceleration_bootstrap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calculate_avg_brain_age_acceleration_one_gender.py" beforeDir="false" afterPath="$PROJECT_DIR$/calculate_avg_brain_age_acceleration_one_gender.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calculate_brain_age_acceleration.py" beforeDir="false" afterPath="$PROJECT_DIR$/calculate_brain_age_acceleration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/combine_M_F_plots_calc_interaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/combine_M_F_plots_calc_interaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper_functions_mfinteraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/helper_functions_mfinteraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make_time1_normative_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/make_time1_normative_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/norm_model_predict_age_from_cortthick.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/Apply_Normative_Model_to_Genz_Time2_FInal_Subjects.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/Apply_Normative_Model_to_Genz_Time2_FInal_Subjects.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/CalculateEffectSizeConfidenceInterval.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/CalculateEffectSizeConfidenceInterval.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/NormativeModelGenz_Time1_FInalSubjects.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TestPCNNatureProtTutBinaryGenderCortthick/NormativeModelGenz_Time1_FInalSubjects.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WoodAnimalData/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../WoodAnimalData/helper_functions.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2fvPylSzHuoGiL37YDx5hJREqwc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Python.Calculate_Age_From_Mean_Cortical_Thickness.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Calculate_Effect_SIze_and_CI_using_Zscore.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.NormativeModel_Create_and_Apply_Genz_M_F_Separate.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Utility_Functions.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Utility_Functions_Predict_Age.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.calculate_avg_brain_age_acceleration_bootstrap.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.calculate_avg_brain_age_acceleration_one_gender.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.combine_M_F_plots_calc_interaction.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.make_time1_normative_model.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.norm_model_predict_age_from_cortthick.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/home/toddr/neva/PycharmProjects/Adol_COVID_cortthick_CentileBrain/NormativeModel_Create_and_Apply_Genz_M_F_Separate.py&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-babbdf50b680-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.15989.155" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b613695e-70e4-4fb5-a8c4-693b8f47189c" name="Changes" comment="" />
+      <created>1714678835345</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1714678835345</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Finished first half of code to predict age from cortical thickness. I generated the model from the time 1 data.">
+      <option name="closed" value="true" />
+      <created>1715108420438</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1715108420438</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Finished all to predict age from cortical thickness. I generated the model from the time 1 data.">
+      <option name="closed" value="true" />
+      <created>1715110646637</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1715110646637</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Calculates interaction and plots models and data for training data only.">
+      <option name="closed" value="true" />
+      <created>1715190385635</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1715190385635</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Calculates interaction and plots models and data for training data only.">
+      <option name="closed" value="true" />
+      <created>1715190525223</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1715190525223</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Removed error where I was accessing data from old directory">
+      <option name="closed" value="true" />
+      <created>1715201400605</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715201400605</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Removed error where I was accessing data from old directory">
+      <option name="closed" value="true" />
+      <created>1715201427721</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1715201427721</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Perform age acceleration calculation without bootstrap">
+      <option name="closed" value="true" />
+      <created>1715289713236</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1715289713236</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Perform age acceleration calculation wit bootstrap">
+      <option name="closed" value="true" />
+      <created>1715370010955</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1715370010955</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Finished first half of code to predict age from cortical thickness. I generated the model from the time 1 data." />
+    <MESSAGE value="Finished all to predict age from cortical thickness. I generated the model from the time 1 data." />
+    <MESSAGE value="Calculates interaction and plots models and data for training data only." />
+    <MESSAGE value="Removed error where I was accessing data from old directory" />
+    <MESSAGE value="Perform age acceleration calculation without bootstrap" />
+    <MESSAGE value="Perform age acceleration calculation with bootstrap" />
+    <MESSAGE value="Perform age acceleration calculation with bootstrap" />
+    <option name="LAST_COMMIT_MESSAGE" value="Perform age acceleration calculation with bootstrap" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/NormativeModel_Create_and_Apply_Genz_M_F_Separate.py</url>
+          <line>83</line>
+          <option name="timeStamp" value="303" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/calculate_avg_brain_age_acceleration_one_gender.py</url>
+          <line>336</line>
+          <option name="timeStamp" value="315" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

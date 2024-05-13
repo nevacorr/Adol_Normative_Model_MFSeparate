@@ -12,6 +12,7 @@ import glob
 from pcntoolkit.util.utils import create_bspline_basis
 from matplotlib.colors import ListedColormap
 from scipy import stats
+import ast
 
 def makenewdir(path):
     isExist = os.path.exists(path)
@@ -32,10 +33,10 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
         print('Creating basis expansion for ROI:', roi)
         roi_dir = os.path.join(data_dir, roi)
         os.chdir(roi_dir)
-        # create output dir
+        # Create output dir
         os.makedirs(os.path.join(roi_dir, 'blr'), exist_ok=True)
 
-        # load train & test covariate data matrices
+        # Load train & test covariate data matrices
         if datatype == 'train':
             X = np.loadtxt(os.path.join(roi_dir, 'cov_tr.txt'))
         elif datatype == 'test':
@@ -44,7 +45,7 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
             tmp=np.loadtxt(p)
             X = np.loadtxt(os.path.join(roi_dir, 'cov_te.txt'))
 
-        # add intercept column
+        # Add intercept column
         X = np.vstack((X, np.ones(len(X)))).T
 
         if datatype == 'train':
@@ -52,8 +53,8 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
         elif datatype == 'test':
             np.savetxt(os.path.join(roi_dir, 'cov_int_te.txt'), X)
 
-        # create Bspline basis set
-        # This creates a numpy array called Phi by applying function B to each element of the first column of X_tr
+        # Create Bspline basis set
+        # This creates a numpy array called Phi by applying function B to each element of the first column of X
         Phi = np.array([B(i) for i in X[:, 0]])
         X = np.concatenate((X, Phi), axis=1)
         if datatype == 'train':
@@ -61,28 +62,28 @@ def create_design_matrix_one_gender(datatype, agemin, agemax, spline_order, spli
         elif datatype == 'test':
             np.savetxt(os.path.join(roi_dir, 'cov_bspline_te.txt'), X)
 
-#this function creates a dummy design matrix for plotting of spline function
+# This function creates a dummy design matrix for plotting of spline function
 def create_dummy_design_matrix_one_gender(struct_var, agemin, agemax, cov_file, spline_order, spline_knots, path):
 
-    # make dummy test data covariate file starting with a column for age
+    # Make dummy test data covariate file starting with a column for age
     dummy_cov = np.linspace(agemin, agemax, num=1000)
     ones = np.ones((1, dummy_cov.shape[0]))
 
-    #add a column for intercept
+    # Add a column for intercept
     dummy_cov_final = np.vstack((dummy_cov, ones)).T
 
-    # create spline features and add them to predictor dataframe
+    # Create spline features and add them to predictor dataframe
     BAll = create_bspline_basis(agemin, agemax, p=spline_order, nknots=spline_knots)
     Phidummy = np.array([BAll(i) for i in dummy_cov_final[:, 0]])
     dummy_cov_final = np.concatenate((dummy_cov_final, Phidummy), axis=1)
 
-    # write these new created predictor variables with spline and response variable to file
+    # Write these new created predictor variables with spline and response variable to file
     dummy_cov_file_path = os.path.join(path, 'cov_file_dummy.txt')
     np.savetxt(dummy_cov_file_path, dummy_cov_final)
     return dummy_cov_file_path
 
 
-# this function plots  data with spline model superimposed, for both male and females
+# This function plots  data with spline model superimposed, for both male and females
 def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp_file, dummy_cov_file_path, model_dir, roi,
                                      showplots, working_dir):
 
@@ -90,12 +91,12 @@ def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp
 
     yhat_predict_dummy=output[0]
 
-    # load real data predictor variables for region
+    # Load real data predictor variables for region
     X = np.loadtxt(cov_file)
-    # load real data response variables for region
+    # Load real data response variables for region
     y = np.loadtxt(resp_file)
 
-    # create dataframes for plotting with seaborn facetgrid objects
+    # Create dataframes for plotting with seaborn facetgrid objects
     dummy_cov = np.loadtxt(dummy_cov_file_path)
     df_origdata = pd.DataFrame(data=X[:, 0], columns=['Age in Days'])
     df_origdata[struct_var] = y.tolist()
@@ -106,6 +107,7 @@ def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp
     df_estspline[struct_var] = tmp
     df_estspline = df_estspline.drop(index=df_estspline.iloc[999].name).reset_index(drop=True)
 
+    # PLot figure
     fig=plt.figure()
     if gender == 'female':
         color = 'green'
@@ -127,6 +129,12 @@ def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp
         plt.savefig('{}/data/{}/plots/{}_vs_age_withsplinefit_{}_{}'
                 .format(working_dir, struct_var, struct_var, roi.replace(struct_var+'-', ''), datastr))
         plt.close(fig)
+    if datastr == 'Training Data':
+        splinemodel_fname = f'{working_dir}/data/{struct_var}/plots/spline_model_{datastr}_{roi}_{gender}.csv'
+        origdata_fname = f'{working_dir}/data/{struct_var}/plots/datapoints_{datastr}_{roi}_{gender}.csv'
+        df_estspline.to_csv(splinemodel_fname)
+        df_origdata.to_csv(origdata_fname)
+
     # Write model to file if training set so male and female data and models can be viewed on same plot
     if datastr == 'Training Data':
         splinemodel_fname = f'{working_dir}/data/{struct_var}/plots/spline_model_{datastr}_{roi}_{gender}.csv'
@@ -136,14 +144,13 @@ def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp
     if datastr == 'Postcovid (Test) Data ':
         origdata_fname = f'{working_dir}/predict_files/{struct_var}/plots/datapoints_{datastr}_{roi}_{gender}.csv'
     df_origdata.to_csv(origdata_fname)
-
+    mystop=1
 
 def plot_y_v_yhat_one_gender(gender, cov_file, resp_file, yhat, typestring, struct_var, roi, Rho, EV):
     cov_data = np.loadtxt(cov_file)
     y = np.loadtxt(resp_file).reshape(-1,1)
     dfp = pd.DataFrame()
     y=y.flatten()
-    yht=yhat.flatten()
     dfp['y'] = y
     dfp['yhat'] = yhat
     print(dfp.dtypes)
@@ -199,24 +206,24 @@ def write_list_to_file(mylist, filepath):
            file.write(item + '\n')
 
 def plot_brain_age_gap_by_gender(brain_age_gap_df, model_type, include_gender):
-    #input dataframe must have a 'gender' columns and an 'agediff' column
-    #plot figure
+    # Input dataframe must have a 'gender' columns and an 'agediff' column
+    # Plot figure
     fig=plt.figure(figsize=(7,7))
     if include_gender ==0:
-        #plot histograms
+        # Plot histograms
         mean_diff = brain_age_gap_df['agediff'].mean()
         sns.histplot(data=brain_age_gap_df, x='agediff')
         plt.title(
             f'{model_type} Distributions of difference between post-COVID\n lockdown age and actual age\n '
             f'mean diff = {mean_diff:.1f} years')
     elif include_gender == 1:
-       # find mean of age_diff by gender
+       # Find mean of age_diff by gender
         means_by_gender = brain_age_gap_df.groupby('gender')['agediff'].mean()
         mean_diff_male = means_by_gender[1]
         mean_diff_female = means_by_gender[2]
         p = {'male': 'blue', 'female': 'orange'}
         brain_age_gap_df['gender'].replace({1: 'male', 2: 'female'}, inplace=True)
-        #plot histograms
+        # Plot histograms
         sns.histplot(data=brain_age_gap_df, x='agediff', hue='gender', palette = p, element='step')
         plt.title(
             f'{model_type} Distributions of difference between post-COVID\n lockdown age and actual age by gender\n '
@@ -258,7 +265,6 @@ def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path):
     yhat_predict_dummy = output[0]
 
     # remove last element of age and output arrays
-    last_index = len(yhat_predict_dummy) - 1
     yhat_predict_dummy = np.delete(yhat_predict_dummy, -1)
     dummy_ages = np.delete(dummy_ages.to_numpy(), -1)
 
@@ -273,3 +279,80 @@ def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path):
 
     return slope, intercept
 
+def plot_age_acceleration(working_dir, nbootstrap, mean_agediff):
+    # Initialize an empty dictionary
+    ageacc_from_bootstraps = {}
+
+    # Open the file with bootstrap results for age acceleration for both genders for reading
+    with open(f"{working_dir}/ageacceleration_dictionary {nbootstrap} bootstraps.txt", 'r') as f:
+        # Iterate over each line in the file
+        for line in f:
+            # Split the line into key-value pairs using the colon (:) as the separator
+            key, value = line.strip().split(':')
+            # Convert the value to the appropriate data type if needed (e.g., float)
+            # Add the key-value pair to the dictionary
+            ageacc_from_bootstraps[key] = value
+
+    # Convert age acceleration dictionoary to series for each gender
+    female_acc = pd.Series(ast.literal_eval(ageacc_from_bootstraps['female']))
+    male_acc = pd.Series(ast.literal_eval(ageacc_from_bootstraps['male']))
+
+    # Sort the series
+    female_acc.sort_values(inplace=True)
+    female_acc.reset_index(inplace=True, drop=True)
+    male_acc.sort_values(inplace=True)
+    male_acc.reset_index(inplace=True, drop=True)
+
+    female_CI = np.percentile(female_acc, (2.5, 97.5), method='closest_observation')
+    male_CI = np.percentile(male_acc, (2.5, 97.5), method='closest_observation')
+
+    # Plot mean age acceleration with confidence intervals for males and females on same plots
+    plt.figure(figsize=(4, 6))
+    plt.errorbar(0.4, mean_agediff['female'],
+                 np.array(mean_agediff['female'] - female_CI[0], female_CI[1] - mean_agediff['female']),
+                 color='green', marker='o')
+    plt.errorbar(0.2, mean_agediff['male'],
+                 np.array(mean_agediff['male'] - male_CI[0], male_CI[1] - mean_agediff['male']),
+                 color='blue', marker='o')
+
+    plt.xlim([0, 0.6])
+    plt.title('Age Acceleration By Sex\nwith 95% Confidence Interval')
+    plt.xlabel('Sex', fontsize=12)
+    plt.ylabel('Age Acceleration (years)', fontsize=12)
+    plt.xticks([0.2, 0.4], labels=['Male', 'Female'], fontsize=12)
+    plt.show(block=False)
+
+def plot_age_acceleration_by_subject(y_yhat_df, gender, working_dir, struct_var):
+    # Load file with age and predicted age
+    y_yhat_df = pd.read_csv(f'{working_dir}/predict_files/avgct_{struct_var}/age and predicted age postcovid_test_data_{gender}.csv')
+
+    # Load model mapping between cortical thickness and age
+    model_mapping = pd.read_csv(f'{working_dir}/data/avgct_cortthick_{gender}/plots/spline_model_Training Data_avgcortthick_{gender}.csv')
+    model_mapping.drop(columns=['Unnamed: 0'], inplace=True)
+    model_mapping['Age in Days'] = model_mapping['Age in Days']*365.25
+
+    # For every post-covid subjects, calculate what predicted age would be based on actual cortical thickness for that subject
+    age_acceleration = []
+    plot_df = pd.DataFrame()
+    for val in range(y_yhat_df.shape[0]):
+        index_match = model_mapping[f'avgct_cortthick_{gender}'].sub(y_yhat_df.loc[val, 'actual_avgcortthick']).abs().idxmin()
+        predicted_age = model_mapping.loc[index_match, 'Age in Days']
+        actual_age = y_yhat_df.loc[val, 'agedays']
+        age_acceleration.append(predicted_age - actual_age)
+        plot_df.loc[val, 'actual_age'] = actual_age/365.25
+        plot_df.loc[val, 'predicted_age'] = predicted_age/365.25
+        plot_df.loc[val, 'index'] = val
+    avg_age_acceleration = (sum(age_acceleration) / len(age_acceleration))/365.25
+    fig, axs = plt.subplots(2, figsize=(10, 8))
+    axs[0].scatter(plot_df['index'], plot_df['actual_age'], color='red')
+    axs[0].scatter(plot_df['index'], plot_df['predicted_age'], color='purple')
+    axs[0].legend(['actual age', 'predicted age'], loc='lower left')
+    axs[0].set_title(f'Actual Age and Predicted Age for all Post Covid Subjects {gender}')
+    axs[0].set_xlabel('Subject Number')
+    axs[0].set_ylabel('Age')
+    axs[1].scatter(plot_df['index'], plot_df['predicted_age'] - plot_df['actual_age'], color = 'gray')
+    axs[1].set_title(f'Predicted minus Actual Age for all Post Covid Subjects {gender}  Average = {avg_age_acceleration:.1f} years')
+    axs[1].set_xlabel('Subject Number')
+    axs[1].set_ylabel(f'Predicted minus Actual Age {gender} (years)')
+    plt.show()
+    mystop=1

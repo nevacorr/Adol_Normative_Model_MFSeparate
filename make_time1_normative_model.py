@@ -241,6 +241,7 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
         y_te = y_te[:, np.newaxis]  # make sure it is a 2-d array
 
         y_mean_te = np.mean(y_te)
+
         y_var_te = np.var(y_te)
         yhat_mean_te = np.mean(yhat_te)
         yhat_var_te = np.var(yhat_te)

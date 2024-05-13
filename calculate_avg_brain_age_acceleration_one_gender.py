@@ -13,7 +13,7 @@ from plot_num_subjs import plot_num_subjs
 from Utility_Functions import create_design_matrix_one_gender, plot_data_with_spline_one_gender
 from Utility_Functions import create_dummy_design_matrix_one_gender
 from Utility_Functions import plot_y_v_yhat_one_gender, makenewdir, movefiles
-from Utility_Functions import write_ages_to_file_by_gender, read_ages_from_file
+from Utility_Functions import write_ages_to_file_by_gender, read_ages_from_file, plot_age_acceleration_by_subject
 from Load_Genz_Data import load_genz_data
 import shutil
 import os
@@ -172,7 +172,7 @@ def calculate_avg_brain_age_acceleration_one_gender_make_model(gender, orig_stru
                                                   spline_order, spline_knots, working_dir)
 
         #compute splines and superimpose on data. Show on screen or save to file depending on show_plots value.
-        plot_data_with_spline_one_gender(gender, 'Training Data', struct_var, cov_file_tr, resp_file_tr,
+        plot_data_with_spline_one_gender(gender, 'Training Data', 'avgct_' + struct_var, cov_file_tr, resp_file_tr,
                                          dummy_cov_file_path, model_dir, roi, show_plots, working_dir)
 
     plt.show()
@@ -314,15 +314,23 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model(gender, orig_str
 
         #create dummy design matrices
         dummy_cov_file_path = \
-            create_dummy_design_matrix_one_gender(struct_var, agemin, agemax, cov_file_te, spline_order,
+            create_dummy_design_matrix_one_gender('avgct_' + struct_var, agemin, agemax, cov_file_te, spline_order,
                                                   spline_knots, working_dir)
 
-        plot_data_with_spline_one_gender(gender, 'Postcovid (Test) Data ', struct_var, cov_file_te, resp_file_te, dummy_cov_file_path,
+        plot_data_with_spline_one_gender(gender, 'Postcovid (Test) Data ', 'avgct_' + struct_var, cov_file_te, resp_file_te, dummy_cov_file_path,
                                   model_dir, roi, show_plots, working_dir)
 
         #calculate brain age acceleration
-        mean_agediff = calculate_age_acceleration_one_gender(gender, struct_var, roi_dir, yhat_te, model_dir, roi,
-                                                                    dummy_cov_file_path)
+        mean_agediff = calculate_age_acceleration_one_gender(roi_dir, model_dir, dummy_cov_file_path)
+
+    y_yhat_te_df = pd.DataFrame(yhat_te, columns=['pred_avgcortthick'])
+    y_yhat_te_df['agedays'] = all_data['agedays']
+    y_yhat_te_df['actual_avgcortthick'] = y_test['avgcortthick']
+    y_yhat_te_df.to_csv('/{}/predict_files/avgct_{}/ct and predicted ct postcovid_test_data_{}.csv'
+                                 .format(working_dir, struct_var, gender), index=False)
+
+    # plot_age_acceleration_by_subject(y_yhat_te_df, gender, working_dir, struct_var)
+
 
     plt.show()
 

@@ -24,48 +24,50 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap(gender
 
     #############################  Apply Normative Model to Post-COVID Data ####################
 
-    # load all brain and behavior data for visit 2
+    # Load all brain and behavior data for visit 2
     visit = 2
     brain_good, all_data, roi_ids = load_genz_data(orig_struct_var, visit, orig_data_dir)
 
-    #load brain and behavior data for visit 1
+    # Load brain and behavior data for visit 1
     visit = 1
     brain_v1, all_v1, roi_v1 = load_genz_data(orig_struct_var, visit, orig_data_dir)
 
-    #extract subject numbers from visit 1 and find subjects in visit 2 that aren't in visit 1
-    subjects_visit1 = all_v1['participant_id']
+    # Extract subject numbers from visit 1 and find subjects in visit 2 that aren't in visit 1
+    # subjects_visit1 = all_v1['participant_id']
     rows_in_v2_but_not_v1 = all_data[~all_data['participant_id'].isin(all_v1['participant_id'])].dropna()
     subjs_in_v2_not_v1 = rows_in_v2_but_not_v1['participant_id'].copy()
     subjs_in_v2_not_v1 = subjs_in_v2_not_v1.astype(int)
-    #only keep subjects at 12, 14 and 16 years of age (subject numbers <400) because cannot model 18 and 20 year olds
+
+    # Only keep subjects at 12, 14 and 16 years of age (subject numbers <400) because cannot model does not cover
+    # older ages
     subjs_in_v2_not_v1 = subjs_in_v2_not_v1[subjs_in_v2_not_v1 < 400]
 
     if gender == 'male':
-        # keep only data for males
+        # Keep only data for males
         all_data = all_data.loc[all_data['sex'] == 1]
         struct_var = 'cortthick_male'
     else:
-        # keep only data for females
+        # Keep only data for females
         all_data = all_data.loc[all_data['sex'] == 2]
         struct_var = 'cortthick_female'
 
-    #remove sex column
+    # Remove sex column
     all_data = all_data.drop(columns=['sex'])
 
-    #only include subjects that were not in the training set
+    # Only include subjects that were not in the training set
     fname='{}/visit1_subjects_excluded_from_normative_model_test_set_{}_9_11_13.txt'.format(orig_data_dir, orig_struct_var)
     subjects_to_include = pd.read_csv(fname, header=None)
     subjects_to_include = pd.concat([subjects_to_include, subjs_in_v2_not_v1])
-    brain_good = brain_good[brain_good['participant_id'].isin(subjects_to_include[0])]
+    # brain_good = brain_good[brain_good['participant_id'].isin(subjects_to_include[0])]
     all_data = all_data[all_data['participant_id'].isin(subjects_to_include[0])]
 
-    #reset indices
+    # Reset indices
     all_data.reset_index(inplace=True, drop=True)
 
-    # read agemin and agemax from file
+    # Read agemin and agemax from file
     agemin, agemax = read_ages_from_file(working_dir, struct_var)
 
-    # show number of subjects by gender and age
+    # Show number of subjects by gender and age
     if gender == "female":
         genstring = 'Female'
     elif gender == "male":
@@ -145,11 +147,8 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap(gender
 
         ####Make Predictions of Brain Structural Measures Post-Covid based on Pre-Covid Normative Model
 
-        #create design matrices for all regions and save files in respective directories
+        # Create design matrices for all regions and save files in respective directories
         create_design_matrix_one_gender('test', agemin, agemax, spline_order, spline_knots, ['avgcortthick'], predict_files_dir)
-
-        agediff_female = []
-        agediff_male = []
 
         for roi in ['avgcortthick']:
             print('Running ROI:', roi)
@@ -157,18 +156,18 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap(gender
             model_dir = os.path.join(training_dir, roi, 'Models')
             os.chdir(roi_dir)
 
-            # configure the covariates to use.
+            # Configure the covariates to use.
             cov_file_te=os.path.join(roi_dir, 'cov_bspline_te.txt')
 
-            # load test response files
+            # Load test response files
             resp_file_te=os.path.join(roi_dir, 'resp_te.txt')
 
-            # make predictions
+            # Make predictions
             yhat_te, s2_te, Z = predict(cov_file_te, respfile=resp_file_te, alg='blr', model_path=model_dir)
 
             Z_time2[roi] = Z
 
-            #create dummy design matrices
+            # Create dummy design matrices
             dummy_cov_file_path = \
                 create_dummy_design_matrix_one_gender(struct_var, agemin, agemax, cov_file_te, spline_order,
                                                       spline_knots, working_dir)
@@ -176,9 +175,8 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap(gender
             plot_data_with_spline_one_gender(gender, 'Postcovid (Test) Data ', struct_var, cov_file_te, resp_file_te, dummy_cov_file_path,
                                       model_dir, roi, show_plots, working_dir)
 
-            #calculate brain age acceleration
-            mean_agediff_boot.append(calculate_age_acceleration_one_gender(gender, struct_var, roi_dir, yhat_te, model_dir, roi,
-                                                                        dummy_cov_file_path))
+            # Calculate brain age acceleration
+            mean_agediff_boot.append(calculate_age_acceleration_one_gender(roi_dir, model_dir, dummy_cov_file_path))
 
         if show_plots:
             plt.show()
