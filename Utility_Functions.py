@@ -356,3 +356,15 @@ def plot_age_acceleration_by_subject(y_yhat_df, gender, working_dir, struct_var)
     axs[1].set_ylabel(f'Predicted minus Actual Age {gender} (years)')
     plt.show()
     mystop=1
+
+def write_list_of_lists(data, file_path):
+    # Write the list of lists to a file using list comprehension
+    with open(file_path, 'w') as file:
+        file.writelines([' '.join(str(num) for num in sublist) + '\n' for sublist in data])
+
+def read_list_of_lists(file_path):
+    # Read a list of lists from file using list comprehension
+    read_data = []
+    with open(file_path, 'r') as file:
+        read_data = [[int(num) for num in line.split()] for line in file]
+    return read_data

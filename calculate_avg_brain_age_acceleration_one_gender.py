@@ -12,11 +12,12 @@ from pcntoolkit.normative import estimate, evaluate
 from plot_num_subjs import plot_num_subjs
 from Utility_Functions import create_design_matrix_one_gender, plot_data_with_spline_one_gender
 from Utility_Functions import create_dummy_design_matrix_one_gender
-from Utility_Functions import plot_y_v_yhat_one_gender, makenewdir, movefiles
+from Utility_Functions import plot_y_v_yhat_one_gender, makenewdir, movefiles, write_list_of_lists, read_list_of_lists
 from Utility_Functions import write_ages_to_file_by_gender, read_ages_from_file, plot_age_acceleration_by_subject
 from Load_Genz_Data import load_genz_data
 import shutil
 import os
+import random
 from normative_edited import predict
 from calculate_brain_age_acceleration import calculate_age_acceleration_one_gender
 
@@ -179,7 +180,7 @@ def calculate_avg_brain_age_acceleration_one_gender_make_model(gender, orig_stru
 
 def calculate_avg_brain_age_acceleration_one_gender_apply_model(gender, orig_struct_var, show_nsubject_plots,
                                                                show_plots, spline_order, spline_knots,
-                                                               orig_data_dir, working_dir):
+                                                               orig_data_dir, working_dir, num_permute, permute, shuffnum):
     #############################  Apply Normative Model to Post-COVID Data ####################
 
     # load all brain and behavior data for visit 2
@@ -197,6 +198,49 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model(gender, orig_str
     subjs_in_v2_not_v1 = subjs_in_v2_not_v1.astype(int)
     #only keep subjects at 12, 14 and 16 years of age (subject numbers <400) because cannot model 18 and 20 year olds
     subjs_in_v2_not_v1 = subjs_in_v2_not_v1[subjs_in_v2_not_v1 < 400]
+
+    if permute and shuffnum == 0 and gender == 'male':
+        # for permutation testing
+        list_to_shuffle = all_data['sex'].to_list()
+        # shuffle this list 100 times and save to list of lists
+        list_of_shuffled_sex = []
+        for i in range(num_permute):
+            shuffled_sex = random.sample(list_to_shuffle, len(list_to_shuffle))
+            list_of_shuffled_sex.append(shuffled_sex)
+            mystop=1
+        # save list of lists to file
+        write_list_of_lists(list_of_shuffled_sex, f'{working_dir}/sexes_permuted.txt')
+
+    # create a shuffle stratified by age group
+    if permute and shuffnum == 0 and gender == 'male':
+        # for permutation testing
+        list_to_shuffle = all_data['sex'].to_list()
+        list_for_stratify = all_data['age']
+        unique_values = set(list_for_stratify)
+        # shuffle this list 100 times and save to list of lists
+        list_of_shuffled_sex = []
+        for _ in range(num_permute):
+            shuffled_sex = []
+            for value in unique_values:
+                indices = [i for i, v in enumerate(list_for_stratify) if v == value]
+                shuffled_indices = random.sample(indices, len(indices))
+                for index in shuffled_indices:
+                    shuffled_sex.append(list_to_shuffle[index])
+            list_of_shuffled_sex.append(shuffled_sex)
+            mystop=1
+        # save list of lists to file
+        write_list_of_lists(list_of_shuffled_sex, f'{working_dir}/sexes_permuted.txt')
+
+    if permute:
+        list_of_shuffled_sex = read_list_of_lists(f'{working_dir}/sexes_permuted.txt')
+        shuffled_sex = list_of_shuffled_sex[shuffnum]
+
+        # Reorder the 'sex' column based on the new_order list
+        all_data.loc[:, 'sex'] = shuffled_sex
+
+    # Write number of each unique values to screen
+    for index, value in all_data['sex'].value_counts().items():
+        print(f'Number of values {index} is {value}')
 
     if gender == 'male':
         # keep only data for males
