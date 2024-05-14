@@ -32,13 +32,13 @@ for col in rois:
     Z2_stats.loc['std_male', col] = np.std(Z2_male.loc[:,col])
 
 Z2_stats.loc['upper_CI_female',:] = (
-        Z2_stats.loc['mean_female',:] + 2 * Z2_stats.loc['std_female'] / math.sqrt(Z2_female.shape[0] - 1))
+        Z2_stats.loc['mean_female',:] + 1.96 * Z2_stats.loc['std_female'] / math.sqrt(Z2_female.shape[0] - 1))
 Z2_stats.loc['lower_CI_female',:] = (
-        Z2_stats.loc['mean_female',:] - 2 * Z2_stats.loc['std_female'] / math.sqrt(Z2_female.shape[0] - 1))
+        Z2_stats.loc['mean_female',:] - 1.96 * Z2_stats.loc['std_female'] / math.sqrt(Z2_female.shape[0] - 1))
 Z2_stats.loc['upper_CI_male',:] = (
-        Z2_stats.loc['mean_male',:] + 2 * Z2_stats.loc['std_male'] / math.sqrt(Z2_male.shape[0] - 1))
+        Z2_stats.loc['mean_male',:] + 1.96 * Z2_stats.loc['std_male'] / math.sqrt(Z2_male.shape[0] - 1))
 Z2_stats.loc['lower_CI_male',:] = (
-        Z2_stats.loc['mean_male',:] - 2 * Z2_stats.loc['std_male'] / math.sqrt(Z2_male.shape[0] - 1))
+        Z2_stats.loc['mean_male',:] - 1.96 * Z2_stats.loc['std_male'] / math.sqrt(Z2_male.shape[0] - 1))
 
 # Remove prefix from column names
 Z2_stats.columns = Z2_stats.columns.str.replace('cortthick-', '')
