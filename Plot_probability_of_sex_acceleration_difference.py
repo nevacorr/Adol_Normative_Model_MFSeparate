@@ -22,9 +22,9 @@ percentile = percentileofscore(sex_acceleration_dist, empirical_sex_diff)
 plt.figure(figsize = (8, 8))
 plt.hist(new_sex_acc_dist, bins = 10)
 plt.title(f'Distribution of Sex Age Acceleration Difference(female - male)\nfrom {newlength} Permutation of Labels\n'
-          f'Percentile of Empirical Value = {percentile:.0f}')
-plt.xlabel('Difference between Female and Male Acceleration in Age (years)')
-plt.ylabel('Count')
+          f'Percentile of Empirical Value = {percentile:.1f}', fontsize=14)
+plt.xlabel('Difference between Female and Male Acceleration in Age (years)', fontsize=12)
+plt.ylabel('Count', fontsize=12)
 plt.axvline(x=empirical_sex_diff, color='r')
 plt.show()
 

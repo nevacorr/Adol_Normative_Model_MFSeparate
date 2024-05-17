@@ -28,7 +28,7 @@ show_nsubject_plots = 0 #set to 1 to plot number of subjects used in analysis, f
 spline_order = 1 # order of spline to use for model
 spline_knots = 2 # number of knots in spline to use in model
 nbootstrap = 10
-num_permute = 1000
+num_permute = 10000
 perform_train_test_split_precovid = 0  # flag indicating whether to split training set (pre-covid data) into train and
                                        # validations (test) sets. If this is set to 0, the entire training set is used
                                        # for the model and there is no validation set. Regardless of the value of this
