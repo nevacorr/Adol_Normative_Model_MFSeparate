@@ -230,6 +230,10 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
         plot_data_with_spline_one_gender(gender, 'Training Data', struct_var, cov_file_tr, resp_file_tr, dummy_cov_file_path,
                               model_dir, roi, show_plots, working_dir)
 
+        # compute splines and superimpose on data. Show on screen or save to file depending on show_plots value.
+        plot_data_with_spline_one_gender(gender, 'Validation Data', struct_var, cov_file_te, resp_file_te, dummy_cov_file_path,
+                              model_dir, roi, show_plots, working_dir)
+
         # add a row to the blr_metrics dataframe containing ROI, MSLL, EXPV, SMSE, RMSE, and Rho metrics
         blr_metrics.loc[len(blr_metrics)] = [roi, metrics_te['MSLL'][0],
                                              metrics_te['EXPV'][0], metrics_te['SMSE'][0], metrics_te['RMSE'][0],
@@ -274,4 +278,4 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
                                gender)
     # plt.show()
 
-    return Z_score_train_matrix
+    return Z_score_test_matrix

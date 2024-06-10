@@ -64,13 +64,15 @@ xval_offset = [p - 0.25 for p in xval ]
 plt.errorbar(x=xval_offset, y=mean_male, yerr=[mean_male - lower_ci_male,
                                                 upper_ci_male - mean_male], fmt='o', label='Male', color='blue', markersize=3)
 
-plt.xlabel('Brain Region')
-plt.ylabel('Mean Value')
-plt.title('Mean Zscore by Brain Region with Confidence Intervals')
-plt.legend(loc='lower right')
+plt.xlabel('Brain Region', fontsize=12)
+plt.ylabel('Mean Z-score', fontsize=12)
+plt.title('Mean Z-score by Brain Region with Confidence Intervals')
+plt.legend(loc='lower right', fontsize=12)
 
 plt.xticks(range(len(mean_female)), mean_female.index, rotation=90)
 plt.xlim(-0.8, len(mean_female) - 0.5)
+plt.axhline(y=0, linestyle='--', color='0.5', linewidth=1)
 plt.tight_layout()
+plt.savefig(f'{working_dir}/predict_files/Mean_Z_for_each_region_with_CI_M_F_sep.png')
 plt.show()
 

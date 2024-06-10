@@ -255,7 +255,7 @@ def plot_separate_figures_sorted(df, Z_female, Z_male, binedges, zlim, struct_va
                 .format(struct_var+'_male', figstr, f'fig{fignum}'))
             fignum += 1
 
-        plt.show(block=False)
+        plt.show()
     return fignum
 
 def plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f, pvals_corrected_m, binedges, nokde):
@@ -342,6 +342,7 @@ def plot_and_compute_zcores_by_gender(struct_var, Z_timepoint2):
 
     Z_male = Z_timepoint2['male']
     Z_female = Z_timepoint2['female']
+
     # add gender to Z score dataframe
     Z_male['gender'] = 1
     Z_female['gender'] = 2
