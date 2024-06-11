@@ -6,7 +6,7 @@
 # stores these models to be applied in another script (Apply_Normative_Model_to_Genz_Time2_Final_Subjects.py)
 # to the post-COVID data.
 # Author: Neva M. Corrigan
-# Date: 21 February, 2024
+# Date: 22 February, 2024
 ######
 
 import matplotlib.pyplot as plt
