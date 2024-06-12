@@ -70,7 +70,7 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
     subjects_test = pd.read_csv(fname, header=None)
 
     # exclude subjects from the training set who are in test set
-    brain_good = brain_good[~brain_good['participant_id'].isin(subjects_test[0])]
+  #  brain_good = brain_good[~brain_good['participant_id'].isin(subjects_test[0])]
     all_data = all_data[~all_data['participant_id'].isin(subjects_test[0])]
 
     # write subject numbers for training set to file

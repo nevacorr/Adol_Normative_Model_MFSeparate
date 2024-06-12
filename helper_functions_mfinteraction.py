@@ -22,9 +22,15 @@ def save_csvdata_to_dictdf(fileprefix, data_dir):
             if i==0:
                data_dict[sex]['Age in Days'] = data['Age in Days']
             # Get region names
-            region_name = file.split('cortthick-')[1]
-            region_name = region_name.split(f'_{sex}.csv')[0]
-            data_dict[sex][region_name] = data[f'cortthick_{sex}']
+            if "avgcortthick" in file:
+                region_name = 'avg_allcortex'
+            else:
+                region_name = file.split('cortthick-')[1]
+                region_name = region_name.split(f'_{sex}.csv')[0]
+            try:
+                data_dict[sex][region_name] = data[f'cortthick_{sex}']
+            except:
+                mystop=1
     return data_dict
 
 

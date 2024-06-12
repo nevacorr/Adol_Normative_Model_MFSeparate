@@ -144,7 +144,7 @@ def plot_data_with_spline_one_gender(gender, datastr, struct_var, cov_file, resp
     if datastr == 'Postcovid (Test) Data ':
         origdata_fname = f'{working_dir}/predict_files/{struct_var}/plots/datapoints_{datastr}_{roi}_{gender}.csv'
     if datastr == 'Validation Data':
-        origdata_fname = f'{working_dir}/predict_files/{struct_var}/plots/datapoints_{datastr}_{roi}_{gender}.csv'
+        origdata_fname = f'{working_dir}/data/{struct_var}/plots/datapoints_{datastr}_{roi}_{gender}.csv'
     df_origdata.to_csv(origdata_fname)
     mystop=1
 

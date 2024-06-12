@@ -291,7 +291,6 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model(gender, orig_str
     #make a matrix of response variables, one for each brain region
     y_test = all_data.loc[:, roi_ids]
 
-
     #average cortical thickness across all regions for each subject
     y_test = y_test.mean(axis=1).to_frame()
     y_test.rename(columns={0:'avgcortthick'},  inplace=True)
@@ -381,5 +380,3 @@ def calculate_avg_brain_age_acceleration_one_gender_apply_model(gender, orig_str
     return mean_agediff
 
 
-    plt.show()
-    mystop=1
