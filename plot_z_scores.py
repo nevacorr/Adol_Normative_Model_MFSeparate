@@ -255,7 +255,7 @@ def plot_separate_figures_sorted(df, Z_female, Z_male, binedges, zlim, struct_va
                 .format(struct_var+'_male', figstr, f'fig{fignum}'))
             fignum += 1
 
-        plt.show()
+        plt.show(block=False)
     return fignum
 
 def plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f, pvals_corrected_m, binedges, nokde):

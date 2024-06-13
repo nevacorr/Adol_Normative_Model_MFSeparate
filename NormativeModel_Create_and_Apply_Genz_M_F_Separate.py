@@ -3,7 +3,8 @@
 # NatureProtocols 2022 (https://doi.org/10.1038/s41596-022-00696-5). Here the modeling is applied to
 # adolescent cortica1 thickness data collected at two time points (before and after the COVID lockdowns).
 # This program creates models of cortical thickness change between 9 and 17 years of age for our pre-COVID data and
-# stores these models to be applied in another script (Apply_Normative_Model_to_Genz_Time2_Final_Subjects.py)
+# stores these models to be applied in another script (Apply_Normative_Model_to_Genz_Time2_Final_Subjects.py).
+# This program performs the modeling separately for male and females to allow for interaction between the genders.
 # to the post-COVID data.
 # Author: Neva M. Corrigan
 # Date: 22 February, 2024
@@ -27,15 +28,15 @@ show_plots = 0          #set to 1 to show training and test data ymvs yhat and s
 show_nsubject_plots = 0 #set to 1 to plot number of subjects used in analysis, for each age and gender
 spline_order = 1        # order of spline to use for model
 spline_knots = 2        # number of knots in spline to use in model
-nbootstrap = 10         #number of bootstrap to use in calculating confidence intervals for age accelaration separately by sex
+nbootstrap = 1000         #number of bootstrap to use in calculating confidence intervals for age accelaration separately by sex
 num_permute = 1000     #number of permutations to use in calculating signifiance of sex difference in age acceleration
 perform_train_test_split_precovid = 0  # flag indicating whether to split training set (pre-covid data) into train and
                                        # validations (test) sets. If this is set to 0, the entire training set is used
                                        # for the model and there is no validation set. Regardless of the value of this
                                        # flag, no post-covid data is used in creating or evaluating the normative model.
-run_make_norm_model = 1
+run_make_norm_model = 0
 run_apply_norm_model = 1
-calc_brain_age_acc = 1
+calc_brain_age_acc = 0
 calc_mf_age_acc_diff_permute = 0
 calc_CI_age_acc_bootstrap = 0
 
