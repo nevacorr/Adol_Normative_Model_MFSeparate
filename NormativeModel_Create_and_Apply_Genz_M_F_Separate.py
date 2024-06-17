@@ -35,10 +35,10 @@ perform_train_test_split_precovid = 0  # flag indicating whether to split traini
                                        # for the model and there is no validation set. Regardless of the value of this
                                        # flag, no post-covid data is used in creating or evaluating the normative model.
 run_make_norm_model = 0
-run_apply_norm_model = 1
-calc_brain_age_acc = 0
+run_apply_norm_model = 0
+calc_brain_age_acc = 1
 calc_mf_age_acc_diff_permute = 0
-calc_CI_age_acc_bootstrap = 0
+calc_CI_age_acc_bootstrap = 1
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
 working_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate'
@@ -110,7 +110,8 @@ for gender in ['male', 'female']:
             for key, value in ageacc_from_bootstraps.items():
                 f.write('%s:%s\n' % (key, value))
 
-        plot_age_acceleration(working_dir, nbootstrap, mean_agediff)
+if calc_CI_age_acc_bootstrap:
+    plot_age_acceleration(working_dir, nbootstrap, mean_agediff)
 
 if perform_train_test_split_precovid:
     plot_and_compute_zcores_by_gender(orig_struct_var, Z_time1)

@@ -52,27 +52,29 @@ upper_ci_male = Z2_stats.loc['upper_CI_male']
 lower_ci_male = Z2_stats.loc['lower_CI_male']
 
 # Plotting
-plt.figure(figsize=(12, 8))
-
-# Plotting mean values with error bars for females
-plt.errorbar(x=range(len(mean_female)), y=mean_female, yerr=[mean_female - lower_ci_female,
-                                                upper_ci_female - mean_female], fmt='o', label='Female', color='green', markersize=3)
+fig, axs = plt.subplots(2, figsize=(14, 18), constrained_layout=True)
 
 # Plotting mean values with error bars for males
-xval = range(len(mean_male))
-xval_offset = [p - 0.25 for p in xval ]
-plt.errorbar(x=xval_offset, y=mean_male, yerr=[mean_male - lower_ci_male,
+axs[0].errorbar(x=range(len(mean_male)), y=mean_male, yerr=[mean_male - lower_ci_male,
                                                 upper_ci_male - mean_male], fmt='o', label='Male', color='blue', markersize=3)
 
-plt.xlabel('Brain Region', fontsize=12)
-plt.ylabel('Mean Z-score', fontsize=12)
-plt.title('Mean Z-score by Brain Region with Confidence Intervals')
-plt.legend(loc='lower right', fontsize=12)
+# Plotting mean values with error bars for females
+axs[1].errorbar(x=range(len(mean_female)), y=mean_female, yerr=[mean_female - lower_ci_female,
+                                                upper_ci_female - mean_female], fmt='o', label='Female', color='green', markersize=3)
 
-plt.xticks(range(len(mean_female)), mean_female.index, rotation=90)
-plt.xlim(-0.8, len(mean_female) - 0.5)
-plt.axhline(y=0, linestyle='--', color='0.5', linewidth=1)
-plt.tight_layout()
-plt.savefig(f'{working_dir}/predict_files/Mean_Z_for_each_region_with_CI_M_F_sep.png')
+for ax in [0, 1]:
+    axs[ax].set_ylabel('Mean Z-score', fontsize=12)
+    if ax == 0:
+        gender = 'Males'
+    else:
+        gender = 'Females'
+    axs[ax].set_title(f'{gender}: Mean Z-score with Confidence Intervals by Brain Region')
+
+    axs[ax].set_xticks(range(len(mean_female)), mean_female.index, rotation=90, fontsize=11)
+    axs[ax].set_xlim(-0.8, len(mean_female) - 0.5)
+    axs[ax].axhline(y=0, linestyle='--', color='gray')
+    axs[ax].tick_params(axis='y', labelsize=10)
+
+plt.savefig(f'{working_dir}/Mean_Z-score_for_each_region_with_CI_M_F_sep.png')
 plt.show()
 

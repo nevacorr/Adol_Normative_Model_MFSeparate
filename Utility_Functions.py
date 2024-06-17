@@ -322,7 +322,8 @@ def plot_age_acceleration(working_dir, nbootstrap, mean_agediff):
     plt.xlabel('Sex', fontsize=12)
     plt.ylabel('Age Acceleration (years)', fontsize=12)
     plt.xticks([0.2, 0.4], labels=['Male', 'Female'], fontsize=12)
-    plt.show(block=False)
+    plt.show()
+    mystop=1
 
 def plot_age_acceleration_by_subject(y_yhat_df, gender, working_dir, struct_var):
     # Load file with age and predicted age
