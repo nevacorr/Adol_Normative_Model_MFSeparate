@@ -40,6 +40,15 @@ Z2_stats.loc['upper_CI_male',:] = (
 Z2_stats.loc['lower_CI_male',:] = (
         Z2_stats.loc['mean_male',:] - 1.96 * Z2_stats.loc['std_male'] / math.sqrt(Z2_male.shape[0] - 1))
 
+# Calculate Cohen's d for effect size
+cohensd_female = Z2_stats.loc['mean_female']
+cohensd_male = Z2_stats.loc['mean_male']
+
+# Count cohen's d values above or equal to 0.5
+
+female_count_above_threshold = (cohensd_female <= -0.5).sum()
+male_count_above_threshold = (cohensd_male <= -0.5).sum()
+
 # Remove prefix from column names
 Z2_stats.columns = Z2_stats.columns.str.replace('cortthick-', '')
 
@@ -55,27 +64,47 @@ lower_ci_male = Z2_stats.loc['lower_CI_male']
 fig, axs = plt.subplots(2, figsize=(14, 18), constrained_layout=True)
 
 # Plotting mean values with error bars for males
-axs[0].errorbar(x=range(len(mean_male)), y=mean_male, yerr=[mean_male - lower_ci_male,
+axs[1].errorbar(x=range(len(mean_male)), y=mean_male, yerr=[mean_male - lower_ci_male,
                                                 upper_ci_male - mean_male], fmt='o', label='Male', color='blue', markersize=3)
 
 # Plotting mean values with error bars for females
-axs[1].errorbar(x=range(len(mean_female)), y=mean_female, yerr=[mean_female - lower_ci_female,
+axs[0].errorbar(x=range(len(mean_female)), y=mean_female, yerr=[mean_female - lower_ci_female,
                                                 upper_ci_female - mean_female], fmt='o', label='Female', color='crimson', markersize=3)
 
 for ax in [0, 1]:
-    axs[ax].set_ylabel('Mean Z-score', fontsize=12)
-    if ax == 0:
+    axs[ax].set_ylabel('Mean Effect Size', fontsize=12)
+    if ax == 1:
         gender = 'Males'
     else:
         gender = 'Females'
-    axs[ax].set_title(f'{gender}: Mean Z-score with Confidence Intervals by Brain Region')
+    # axs[ax].set_title(f'{gender}: Mean Z-score with Confidence Intervals by Brain Region')
 
     axs[ax].set_xticks(range(len(mean_female)), mean_female.index, rotation=90, fontsize=11)
     axs[ax].set_xlim(-0.8, len(mean_female) - 0.5)
-    axs[ax].set_ylim(-1.8, 0.9)
+    axs[ax].set_ylim(-1.8, 1.05)
     axs[ax].axhline(y=0, linestyle='--', color='gray')
     axs[ax].tick_params(axis='y', labelsize=10)
+    axs[ax].legend(loc='upper left', fontsize=12)
 
 plt.savefig(f'{working_dir}/Mean_Z-score_for_each_region_with_CI_M_F_sep.png')
+plt.show()
+
+# Plot Cohen's d
+fig, axs =plt.subplots(2, constrained_layout=True, figsize=(14, 18),)
+axs[1].plot(cohensd_male, marker='o', color='b', linestyle='None', label='Males')
+axs[0].plot(cohensd_female, marker='o', color='crimson', linestyle='None',  label='Females')
+for ax in [0, 1]:
+    axs[ax].set_ylabel("Effect Size", fontsize=14)
+    if ax == 1:
+        gender = 'Males'
+    else:
+        gender = 'Females'
+    # axs[ax].set_title(f"{gender}: Effect Size by Brain Region", fontsize=16)
+    axs[ax].set_xticks(range(len(mean_female)), mean_female.index, rotation=90, fontsize=14)
+    axs[ax].set_xlim(-0.8, len(mean_female) - 0.5)
+    axs[ax].set_ylim(-1.4, 0.6)
+    axs[ax].axhline(y=0.0, linestyle='--', color='gray')
+    axs[ax].legend(loc = 'upper left', fontsize=12)
+plt.savefig(f'{working_dir}/Effect Size for both genders no CI MF Separate Models.png')
 plt.show()
 

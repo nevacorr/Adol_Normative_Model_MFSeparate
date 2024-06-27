@@ -322,6 +322,7 @@ def plot_age_acceleration(working_dir, nbootstrap, mean_agediff):
     plt.xlabel('Sex', fontsize=12)
     plt.ylabel('Age Acceleration (years)', fontsize=12)
     plt.xticks([0.2, 0.4], labels=['Male', 'Female'], fontsize=12)
+    plt.axhline(y=0, color='gray', linestyle='--')
     plt.show()
     mystop=1
 
