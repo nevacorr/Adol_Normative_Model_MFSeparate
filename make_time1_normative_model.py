@@ -13,7 +13,7 @@ from Utility_Functions import write_ages_to_file_by_gender
 from Load_Genz_Data import load_genz_data
 
 def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubject_plots, spline_order, spline_knots,
-                               perform_train_test_split_precovid, orig_data_dir, working_dir):
+                               orig_data_dir, working_dir):
 
     # load visit 1 (pre-COVID) data
     visit = 1
@@ -54,24 +54,13 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
                                  '(Total N=' + str(all_data.shape[0]) + ')', struct_var, 'pre-covid_allsubj',
                                   working_dir)
 
-    ########
-    # Before any modeling, determine which subjects will be included in the training (pre-COVID) and test (post-COVID) analysis.
-    # Save subject numbers to file.
-    # Do this only once and then comment the four following lines of code out.
-    ########
-    # save_test_set_to_file_no_long(struct_var, 9)
-    # save_test_set_to_file_no_long(struct_var, 11)
-    # save_test_set_to_file_no_long(struct_var, 13)
-    # The resulting saved file is named visit1_subjects_excluded_from_normative_model_test_set_{struct_var}_9_11_13.txt
+    # read in file of subjects in training set excluding validation set
+    fname = '{}/train_subjects_excludes_validation.csv'.format(orig_data_dir)
+    subjects_train = pd.read_csv(fname, header=None)
 
-    # read in file of subjects in test set at ages 9, 11 and 13
-    fname = '{}/visit1_subjects_excluded_from_normative_model_test_set_{}_9_11_13.txt'.format(orig_data_dir,
-                                                                                              orig_struct_var)
-    subjects_test = pd.read_csv(fname, header=None)
-
-    # exclude subjects from the training set who are in test set
-  #  brain_good = brain_good[~brain_good['participant_id'].isin(subjects_test[0])]
-    all_data = all_data[~all_data['participant_id'].isin(subjects_test[0])]
+    # keep only subjects in training set who are not in validation set
+  #  brain_good = brain_good[brain_good['participant_id'].isin(subjects_test[0])]
+    all_data = all_data[all_data['participant_id'].isin(subjects_train[0])]
 
     # write subject numbers for training set to file
     subjects_training = all_data['participant_id'].tolist()
@@ -95,20 +84,11 @@ def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubjec
     all_data_features = all_data.loc[:, roi_ids]
     all_data_covariates = all_data[['age', 'agedays']]
 
-    # If perform_train_test_split_precovid ==1 , split the training set into training and validation set.
-    # If it is zero, create model based on entire training set
-    if perform_train_test_split_precovid:
-        # Split training set into training and validation sets. Training set will be used to create models. Performance will be
-        # evaluated on the validation set. When performing train-test split, stratify by age and gender
-        X_train, X_test, y_train, y_test = train_test_split(all_data_covariates, all_data_features,
-                                                            stratify=all_data['age'], test_size=0.2,
-                                                            random_state=42)
-    else:
-        # use entire training set to create models
-        X_train = all_data_covariates.copy()
-        X_test = all_data_covariates.copy()
-        y_train = all_data_features.copy()
-        y_test = all_data_features.copy()
+    # use entire training set to create models
+    X_train = all_data_covariates.copy()
+    X_test = all_data_covariates.copy()
+    y_train = all_data_features.copy()
+    y_test = all_data_features.copy()
 
     # identify age range in pre-COVID data to be used for modeling
     agemin = X_train['agedays'].min()
