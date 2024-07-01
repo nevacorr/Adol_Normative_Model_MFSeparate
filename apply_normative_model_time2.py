@@ -48,7 +48,7 @@ def apply_normative_model_time2(gender, orig_struct_var, show_plots, show_nsubje
     #remove sex column
     all_data = all_data.drop(columns=['sex'])
 
-    #only include subjects that were not in the training set
+    #only include subjects that were not in the training or validation set
     fname='{}/visit1_subjects_excluded_from_normative_model_test_set_{}_9_11_13.txt'.format(orig_data_dir, orig_struct_var)
     subjects_to_include = pd.read_csv(fname, header=None)
     subjects_to_include = pd.concat([subjects_to_include, subjs_in_v2_not_v1])
