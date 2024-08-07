@@ -65,11 +65,11 @@ fig, axs = plt.subplots(2, figsize=(14, 18), constrained_layout=True)
 
 # Plotting mean values with error bars for males
 axs[1].errorbar(x=range(len(mean_male)), y=mean_male, yerr=[mean_male - lower_ci_male,
-                                                upper_ci_male - mean_male], fmt='o', label='Male', color='blue', markersize=3)
+                                                upper_ci_male - mean_male], fmt='o', label='Males', color='blue', markersize=3)
 
 # Plotting mean values with error bars for females
 axs[0].errorbar(x=range(len(mean_female)), y=mean_female, yerr=[mean_female - lower_ci_female,
-                                                upper_ci_female - mean_female], fmt='o', label='Female', color='crimson', markersize=3)
+                                                upper_ci_female - mean_female], fmt='o', label='Females', color='crimson', markersize=3)
 
 for ax in [0, 1]:
     axs[ax].set_ylabel('Mean Effect Size', fontsize=12)

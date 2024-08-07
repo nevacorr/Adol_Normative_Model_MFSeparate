@@ -31,11 +31,11 @@ spline_knots = 2        # number of knots in spline to use in model
 nbootstrap = 1000         #number of bootstrap to use in calculating confidence intervals for age accelaration separately by sex
 num_permute = 1000     #number of permutations to use in calculating signifiance of sex difference in age acceleration
 
-run_make_norm_model = 0
-run_apply_norm_model = 0
-calc_brain_age_acc = 1
+run_make_norm_model = 1
+run_apply_norm_model = 1
+calc_brain_age_acc = 0
 calc_mf_age_acc_diff_permute = 0
-calc_CI_age_acc_bootstrap = 1
+calc_CI_age_acc_bootstrap = 0
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
 working_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate'
