@@ -207,55 +207,6 @@ def write_list_to_file(mylist, filepath):
        for item in mylist:
            file.write(item + '\n')
 
-def plot_brain_age_gap_by_gender(brain_age_gap_df, model_type, include_gender):
-    # Input dataframe must have a 'gender' columns and an 'agediff' column
-    # Plot figure
-    fig=plt.figure(figsize=(7,7))
-    if include_gender ==0:
-        # Plot histograms
-        mean_diff = brain_age_gap_df['agediff'].mean()
-        sns.histplot(data=brain_age_gap_df, x='agediff')
-        plt.title(
-            f'{model_type} Distributions of difference between post-COVID\n lockdown age and actual age\n '
-            f'mean diff = {mean_diff:.1f} years')
-    elif include_gender == 1:
-       # Find mean of age_diff by gender
-        means_by_gender = brain_age_gap_df.groupby('gender')['agediff'].mean()
-        mean_diff_male = means_by_gender[1]
-        mean_diff_female = means_by_gender[2]
-        p = {'male': 'blue', 'female': 'orange'}
-        brain_age_gap_df['gender'].replace({1: 'male', 2: 'female'}, inplace=True)
-        # Plot histograms
-        sns.histplot(data=brain_age_gap_df, x='agediff', hue='gender', palette = p, element='step')
-        plt.title(
-            f'{model_type} Distributions of difference between post-COVID\n lockdown age and actual age by gender\n '
-            f'mean diff male = {mean_diff_male:.1f} years mean diff female = {mean_diff_female:.1f} years')
-    plt.xlabel('Predicted post-Covid lock down age  - actual age (years)')
-    plt.ylabel('Number of subjects')
-    plt.show(block=False)
-
-def plotactual_age_vs_predicted_age(X_test_v2, y_test_v2, y_test_pred_v2, datatypestr, model_type, include_gender):
-    if datatypestr == 'train':
-        covid_str = 'pre-covid'
-    elif datatypestr == 'test':
-        covid_str = 'post-covid'
-    plt.figure()
-    ax=plt.axes()
-    if include_gender ==0:
-        sc = ax.scatter(y_test_v2, y_test_pred_v2)
-    elif include_gender ==1:
-        gen = X_test_v2['sex']
-        cmap_custom = ListedColormap(['blue', 'orange'])
-        sc = ax.scatter(y_test_v2, y_test_pred_v2, c=gen, cmap=cmap_custom)
-        handles, labels = sc.legend_elements()
-        labels=['male', 'female']
-        ax.legend(handles, labels)
-    ax.plot([y_test_v2.min(), y_test_v2.max()], [y_test_v2.min(), y_test_v2.max()], color='red')  # plots line y = x
-    ax.set_xlabel('actual age (days)')
-    ax.set_ylabel('predicted age (days)')
-    ax.set_title(f'{model_type} predicted vs actual age for {covid_str} lockdown data')
-    plt.show(block=False)
-
 def fit_regression_model_dummy_data(model_dir, dummy_cov_file_path):
     # create dummy data to find equation for linear regression fit between age and structvar
     dummy_predictors = pd.read_csv(dummy_cov_file_path, delim_whitespace=True, header=None)
