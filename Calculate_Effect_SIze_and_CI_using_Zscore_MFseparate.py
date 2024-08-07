@@ -78,7 +78,6 @@ for ax in [0, 1]:
     else:
         gender = 'Females'
     # axs[ax].set_title(f'{gender}: Mean Z-score with Confidence Intervals by Brain Region')
-
     axs[ax].set_xticks(range(len(mean_female)), mean_female.index, rotation=90, fontsize=11)
     axs[ax].set_xlim(-0.8, len(mean_female) - 0.5)
     axs[ax].set_ylim(-1.8, 1.05)
