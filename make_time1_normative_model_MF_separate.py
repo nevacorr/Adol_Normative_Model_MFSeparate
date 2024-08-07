@@ -6,10 +6,10 @@ import shutil
 from sklearn.model_selection import train_test_split
 from pcntoolkit.normative import estimate, evaluate
 from plot_num_subjs import plot_num_subjs
-from Utility_Functions import create_design_matrix_one_gender, plot_data_with_spline_one_gender
-from Utility_Functions import create_dummy_design_matrix_one_gender
-from Utility_Functions import barplot_performance_values, plot_y_v_yhat_one_gender, makenewdir, movefiles
-from Utility_Functions import write_ages_to_file_by_gender
+from Utility_Functions_MF_Separate import create_design_matrix_one_gender, plot_data_with_spline_one_gender
+from Utility_Functions_MF_Separate import create_dummy_design_matrix_one_gender
+from Utility_Functions_MF_Separate import barplot_performance_values, plot_y_v_yhat_one_gender, makenewdir, movefiles
+from Utility_Functions_MF_Separate import write_ages_to_file_by_gender
 from Load_Genz_Data import load_genz_data
 
 def make_time1_normative_model(gender, orig_struct_var, show_plots, show_nsubject_plots, spline_order, spline_knots,

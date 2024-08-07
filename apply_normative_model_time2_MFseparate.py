@@ -10,8 +10,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from Load_Genz_Data import load_genz_data
 from plot_num_subjs import plot_num_subjs
-from Utility_Functions import makenewdir, movefiles, create_dummy_design_matrix_one_gender
-from Utility_Functions import plot_data_with_spline_one_gender, create_design_matrix_one_gender, read_ages_from_file
+from Utility_Functions_MF_Separate import makenewdir, movefiles, create_dummy_design_matrix_one_gender
+from Utility_Functions_MF_Separate import plot_data_with_spline_one_gender, create_design_matrix_one_gender, read_ages_from_file
 import shutil
 from normative_edited import predict
 

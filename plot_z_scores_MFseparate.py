@@ -9,7 +9,7 @@ import numpy as np
 import seaborn as sns
 import scipy.stats as stats
 import math
-from Utility_Functions import write_list_to_file
+from Utility_Functions_MF_Separate import write_list_to_file
 from matplotlib import ticker as mtick
 from matplotlib import rc
 

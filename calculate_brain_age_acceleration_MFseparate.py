@@ -5,7 +5,7 @@
 
 import numpy as np
 import os
-from Utility_Functions import fit_regression_model_dummy_data
+from Utility_Functions_MF_Separate import fit_regression_model_dummy_data
 
 days_to_years_factor=365.25
 

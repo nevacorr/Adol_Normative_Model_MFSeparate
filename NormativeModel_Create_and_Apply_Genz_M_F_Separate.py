@@ -10,13 +10,13 @@
 ######
 
 import pandas as pd
-from Utility_Functions import plot_age_acceleration
-from make_time1_normative_model import make_time1_normative_model
-from apply_normative_model_time2 import apply_normative_model_time2
-from plot_z_scores import plot_and_compute_zcores_by_gender
+from Utility_Functions_MF_Separate import plot_age_acceleration
+from make_time1_normative_model_MF_separate import make_time1_normative_model
+from apply_normative_model_time2_MFseparate import apply_normative_model_time2
+from plot_z_scores_MFseparate import plot_and_compute_zcores_by_gender
 from calculate_avg_brain_age_acceleration_one_gender import calculate_avg_brain_age_acceleration_one_gender_make_model
 from calculate_avg_brain_age_acceleration_one_gender import calculate_avg_brain_age_acceleration_one_gender_apply_model
-from calculate_avg_brain_age_acceleration_bootstrap import calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap
+from calculate_avg_brain_age_acceleration_bootstrap_one_gender import calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap
 
 orig_struct_var = 'cortthick'
 show_plots = 0          #set to 1 to show training and test data ymvs yhat and spline fit plots.
@@ -27,7 +27,7 @@ nbootstrap = 1000         #number of bootstrap to use in calculating confidence 
 
 run_make_norm_model = 1
 run_apply_norm_model = 1
-calc_brain_age_acc = 0
+calc_brain_age_acc = 1
 calc_CI_age_acc_bootstrap = 0
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'

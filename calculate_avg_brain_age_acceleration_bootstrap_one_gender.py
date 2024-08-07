@@ -8,15 +8,15 @@ import matplotlib.pyplot as plt
 from plot_num_subjs import plot_num_subjs
 from pcntoolkit.normative import estimate, evaluate
 from plot_num_subjs import plot_num_subjs
-from Utility_Functions import create_design_matrix_one_gender, plot_data_with_spline_one_gender
-from Utility_Functions import create_dummy_design_matrix_one_gender
-from Utility_Functions import plot_y_v_yhat_one_gender, makenewdir, movefiles
-from Utility_Functions import write_ages_to_file_by_gender, read_ages_from_file
+from Utility_Functions_MF_Separate import create_design_matrix_one_gender, plot_data_with_spline_one_gender
+from Utility_Functions_MF_Separate import create_dummy_design_matrix_one_gender
+from Utility_Functions_MF_Separate import plot_y_v_yhat_one_gender, makenewdir, movefiles
+from Utility_Functions_MF_Separate import write_ages_to_file_by_gender, read_ages_from_file
 from Load_Genz_Data import load_genz_data
 import shutil
 import os
 from normative_edited import predict
-from calculate_brain_age_acceleration import calculate_age_acceleration_one_gender
+from calculate_brain_age_acceleration_MFseparate import calculate_age_acceleration_one_gender
 
 def calculate_avg_brain_age_acceleration_one_gender_apply_model_bootstrap(gender, orig_struct_var, show_nsubject_plots,
                                                                show_plots, spline_order, spline_knots,
