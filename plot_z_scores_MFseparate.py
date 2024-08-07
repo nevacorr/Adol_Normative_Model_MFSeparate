@@ -10,8 +10,6 @@ import seaborn as sns
 import scipy.stats as stats
 import math
 from Utility_Functions_MF_Separate import write_list_to_file
-from matplotlib import ticker as mtick
-from matplotlib import rc
 
 def one_plot(ax, ptitle, ptitleB, Z_male_region, Z_female_region, binedges, zlim, yeslegend, nokde):
     if nokde==1:
