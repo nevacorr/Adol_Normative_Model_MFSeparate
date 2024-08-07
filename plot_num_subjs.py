@@ -1,5 +1,5 @@
 ##########
-# function that plots number of subjects per age and gender
+# Function that plots number of subjects per age and gender
 ##########
 
 import seaborn as sns
