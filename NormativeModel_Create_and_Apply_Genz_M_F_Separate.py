@@ -87,5 +87,5 @@ if run_apply_norm_model:
     Z_time2['male'] = Z_time2_male
     Z_time2['female'] = Z_time2_female
 
-    plot_and_compute_zcores_by_gender(orig_struct_var, Z_time2)
+    plot_and_compute_zcores_by_gender(orig_struct_var, Z_time2, working_dir)
 

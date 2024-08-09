@@ -35,7 +35,7 @@ def one_plot(ax, ptitle, ptitleB, Z_male_region, Z_female_region, binedges, zlim
         ax.legend(fontsize=14)
     # plt.tight_layout()
 
-def plot_separate_figures_sorted(df, Z_female, Z_male, binedges, zlim, struct_var,f, nokde):
+def plot_separate_figures_sorted(df, Z_female, Z_male, binedges, zlim, struct_var,f, nokde, working_dir):
     sig_string_list = []
     bold_string_list = []
     if nokde == 1:
@@ -109,21 +109,19 @@ def plot_separate_figures_sorted(df, Z_female, Z_male, binedges, zlim, struct_va
             ptitle = f'{sig_string_list[i]}'
             ptitleB = f'{bold_string_list[i]}'
             one_plot(ax6, ptitle, ptitleB, Z_male[region], Z_female[region], binedges, zlim, yeslegend, nokde)
-            plt.savefig(
-                '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate/data/{}/plots/{}_{}'
-                .format(struct_var+'_male', figstr, f'fig{fignum}'))
+            plt.savefig('{}/data/{}/plots/{}_{}'.format(working_dir, struct_var+'_male', figstr, f'fig{fignum}'))
             fignum += 1
 
         if i == df.shape[0]-1:
             plt.savefig(
-                '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate/data/{}/plots/{}_{}'
-                .format(struct_var+'_male', figstr, f'fig{fignum}'))
+                '{}/data/{}/plots/{}_{}'.format(working_dir, struct_var+'_male', figstr, f'fig{fignum}'))
             fignum += 1
 
         plt.show(block=False)
     return fignum
 
-def plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f, pvals_corrected_m, binedges, nokde):
+def plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f,
+                          pvals_corrected_m, binedges, nokde, working_dir):
 
     zmax = math.ceil(binedges[-1])
     zmin = math.floor(binedges[0])
@@ -149,15 +147,19 @@ def plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, rejec
     rois_pvals_notsig.sort_values(by=['pfemale'], axis=0, inplace=True, ignore_index=True)
 
     #plot separate figures for each category
-    fignum=plot_separate_figures_sorted(rois_pvals_sig_femalesigonly, Z_female, Z_male, binedges, zlim, struct_var,0, nokde)
-    fignum=plot_separate_figures_sorted(rois_pvals_sig_allsig, Z_female, Z_male, binedges, zlim, struct_var, fignum, nokde)
-    fignum=plot_separate_figures_sorted(rois_pvals_sig_malessigonly, Z_female, Z_male, binedges, zlim,struct_var,fignum, nokde)
-    fignum=plot_separate_figures_sorted(rois_pvals_notsig, Z_female, Z_male, binedges, zlim,struct_var,fignum, nokde)
+    fignum=plot_separate_figures_sorted(rois_pvals_sig_femalesigonly, Z_female, Z_male, binedges, zlim,
+                                        struct_var,0, nokde, working_dir)
+    fignum=plot_separate_figures_sorted(rois_pvals_sig_allsig, Z_female, Z_male, binedges, zlim, struct_var,
+                                        fignum, nokde, working_dir)
+    fignum=plot_separate_figures_sorted(rois_pvals_sig_malessigonly, Z_female, Z_male, binedges, zlim,struct_var,
+                                        fignum, nokde, working_dir)
+    fignum=plot_separate_figures_sorted(rois_pvals_notsig, Z_female, Z_male, binedges, zlim,struct_var,fignum,
+                                        nokde, working_dir)
 
     plt.show()
     mystop=1
 
-def plot_and_compute_zcores_by_gender(struct_var, Z_timepoint2):
+def plot_and_compute_zcores_by_gender(struct_var, Z_timepoint2, working_dir):
 
     Z_male = Z_timepoint2['male']
     Z_female = Z_timepoint2['female']
@@ -193,7 +195,7 @@ def plot_and_compute_zcores_by_gender(struct_var, Z_timepoint2):
     regions_reject_f = [roi_id for roi_id, reject_value in zip(roi_ids, reject_f) if reject_value]
     regions_reject_m = [roi_id for roi_id, reject_value in zip(roi_ids, reject_m) if reject_value]
 
-    filepath = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate/'
+    filepath = working_dir
     if len(regions_reject_f) > 1 :
         write_list_to_file(regions_reject_f, filepath + f'regions_reject_null_{struct_var}_female.csv')
         write_list_to_file(regions_reject_m, filepath + f'regions_reject_null_{struct_var}_male.csv')
@@ -209,5 +211,6 @@ def plot_and_compute_zcores_by_gender(struct_var, Z_timepoint2):
     binedges = np.linspace(binmin-0.5, binmax+0.5, 24)
 
     nokde=1
-    plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f, pvals_corrected_m, binedges, nokde)
+    plot_by_gender_no_kde(struct_var, Z_female, Z_male, roi_ids, reject_f, reject_m, pvals_corrected_f,
+                          pvals_corrected_m, binedges, nokde, working_dir)
 
