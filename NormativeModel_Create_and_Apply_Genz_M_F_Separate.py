@@ -3,7 +3,7 @@
 # NatureProtocols 2022 (https://doi.org/10.1038/s41596-022-00696-5). Here the modeling is applied to
 # adolescent cortica1 thickness data collected at two time points (before and after the COVID lockdowns).
 # This program creates models of cortical thickness change between 9 and 17 years of age for our pre-COVID data and
-# stores these models to be applied in another script (Apply_Normative_Model_to_Genz_Time2_Final_Subjects.py).
+# stores these models to be applied in another script (Apply_Normative_Model_to_Genz_Time2.py).
 # This program performs the modeling separately for male and females to allow for interaction between the genders.
 # to the post-COVID data.
 # Author: Neva M. Corrigan
@@ -28,7 +28,7 @@ nbootstrap = 1000         #number of bootstrap to use in calculating confidence 
 run_make_norm_model = 1
 run_apply_norm_model = 1
 calc_brain_age_acc = 1
-calc_CI_age_acc_bootstrap = 0
+calc_CI_age_acc_bootstrap = 1
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
 working_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate'
