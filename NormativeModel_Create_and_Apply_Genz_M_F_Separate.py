@@ -10,6 +10,7 @@
 ######
 
 import pandas as pd
+import os
 from Utility_Functions_MF_Separate import plot_age_acceleration
 from make_time1_normative_model_MF_separate import make_time1_normative_model
 from apply_normative_model_time2_MFseparate import apply_normative_model_time2
@@ -31,7 +32,7 @@ calc_brain_age_acc = 1
 calc_CI_age_acc_bootstrap = 1
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
-working_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate'
+working_dir = os.getcwd()
 
 ageacc_from_bootstraps = {}
 male = pd.DataFrame(columns=['mean_agediff'])
