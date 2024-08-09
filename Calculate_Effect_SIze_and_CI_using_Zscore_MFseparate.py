@@ -7,8 +7,9 @@ import pandas as pd
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import os
 
-working_dir = '/home/toddr/neva/PycharmProjects/Adol_Norm_Model_MFSeparate'
+working_dir = os.getcwd()
 
 # Specify filenames for post-covid z-scores
 Z_female_time2_file = f'{working_dir}/predict_files/Z_time2_female.csv'
