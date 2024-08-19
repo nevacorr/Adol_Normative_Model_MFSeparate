@@ -26,10 +26,10 @@ spline_order = 1        # order of spline to use for model
 spline_knots = 2        # number of knots in spline to use in model
 nbootstrap = 1000         #number of bootstrap to use in calculating confidence intervals for age accelaration separately by sex
 
-run_make_norm_model = 1
-run_apply_norm_model = 1
+run_make_norm_model = 0
+run_apply_norm_model = 0
 calc_brain_age_acc = 1
-calc_CI_age_acc_bootstrap = 1
+calc_CI_age_acc_bootstrap = 0
 
 orig_data_dir = '/home/toddr/neva/PycharmProjects/TestPCNNatureProtTutBinaryGenderCortthick'
 working_dir = os.getcwd()
